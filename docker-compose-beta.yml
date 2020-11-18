@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+
+  database:
+    container_name: beta
+    image: kartoza/postgis
+    restart: always
+    env_file:
+      - .env/.development
+    ports:
+      - 5432:5432
+      -
+  beta-web:
+    container_name: beta-web
+    build: .
+    command: bash -c "./entry-point.sh"
+    volumes:
+      - .:/code
+    environment:
+      ENVIRONMENT: 'beta'
+
+  webserver:
+    container_name: beta-nginx
+    build: ./nginx
+    restart: unless-stopped
+    depends_on:
+      - beta-web
+    ports:
+      - 80:80

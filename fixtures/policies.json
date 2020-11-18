@@ -1,0 +1,152 @@
+[
+  {
+    "model": "common.policy",
+    "pk": 1,
+    "fields": {
+      "title": "\u30ac\u30a4\u30c9",
+      "content": "<p id=\"test_text\">\u30ac\u30a4\u30c9</p>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 2,
+    "fields": {
+      "title": "\u306f\u305f\u3089\u304d\u30ca\u30fc\u30b9\u3068\u306f\uff1f",
+      "content": "\u306f\u305f\u3089\u304d\u30ca\u30fc\u30b9\u3068\u306f\uff1f",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 3,
+    "fields": {
+      "title": "\u53e3\u30b3\u30df\u306e\u6295\u7a3f\u56de\u6570\u306b\u3064\u3044\u3066",
+      "content": "\u53e3\u30b3\u30df\u306e\u6295\u7a3f\u56de\u6570\u306b\u3064\u3044\u3066",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 4,
+    "fields": {
+      "title": "\u30dd\u30a4\u30f3\u30c8\u3092\u7372\u5f97\u3059\u308b\u306b\u306f",
+      "content": "<p>\u30dd\u30a4\u30f3\u30c8\u3092\u7372\u5f97\u3059\u308b\u306b\u306f</p>\r\n<h2>\u3053\u308c\u306fh2\u3092\u5165\u308c\u307e\u3057\u305f</h2>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-09-20T11:14:09.812Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 5,
+    "fields": {
+      "title": "\u75c5\u9662\u306e\u30ed\u30b3\u30df\u3092\u95b2\u89a7\u3059\u308b\u306b\u306f\uff1f",
+      "content": "\u75c5\u9662\u306e\u30ed\u30b3\u30df\u3092\u95b2\u89a7\u3059\u308b\u306b\u306f\uff1f",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 6,
+    "fields": {
+      "title": "Amazon\u30ae\u30d5\u30c8\u5238\u30ad\u30e3\u30f3\u30da\u30fc\u30f3",
+      "content": "<h1>Amazon\u30ae\u30d5\u30c8\u5238\u30ad\u30e3\u30f3\u30da\u30fc\u30f3</h1>\r\n<a href=\"https://hataraki-nurse.com/media/\">https://hataraki-nurse.com/media/</a>\r\n<p>\u306f\u305f\u3089\u304d\u30ca\u30fc\u30b9\u3067\u306f\u3001\u75c5\u9662\u30fb\u30af\u30ea\u30cb\u30c3\u30af\u53ca\u3073\u3001\u8ee2\u8077\u30b5\u30a4\u30c8\u306e\u53e3\u30b3\u30df\u6295\u7a3f\u3092\u3044\u305f\u3060\u3044\u305f\u770b\u8b77\u5e2b\u306e\u65b9\u306b\u300c3,000\u5186\u5206\u306eAmazon\u30ae\u30d5\u30c8\u5238\u300d\u3092\u6bce\u6708\u30d7\u30ec\u30bc\u30f3\u30c8\u3057\u3066\u3044\u307e\u3059\u3002<br>\r\n\u4ee5\u4e0b\u306e\u3054\u6ce8\u610f\u70b9\u3092\u78ba\u8a8d\u306e\u4e0a\u3001\u662f\u975e\u6ca2\u5c71\u306e\u53e3\u30b3\u30df\u6295\u7a3f\u3092\u304a\u5f85\u3061\u3057\u3066\u304a\u308a\u307e\u3059\u3002</p><br>\r\n\r\n<h1>\uff1c\u5fc5\u305a\u8cb0\u3048\u308b\uff1e\u6bce\u6708\u306e\u7372\u5f97\u30dd\u30a4\u30f3\u30c8\u4e0a\u4f4d20\u540d\uff01</h1>\r\n<p>\u6bce\u65e5\u3001\u6bce\u6708\u306e\u7372\u5f97\u30dd\u30a4\u30f3\u30c8\u306e\u5408\u8a08\u3092\u96c6\u8a08\u3057\u3066\u304a\u308a\u307e\u3059\u3002<br>\r\n\u6708\u672b\u306e24\u6642\u6642\u70b9\u3067\u3001\u4e0a\u4f4d20\u540d\u306e\u65b9\u306b\u30a2\u30de\u30be\u30f3\u30ae\u30d5\u30c8\u52383,000\u5186\u5206\u3092\u5fc5\u305a\u30d7\u30ec\u30bc\u30f3\u30c8\u3057\u3066\u3044\u307e\u3059\u3002<br>\r\n\u53e3\u30b3\u30df\u3092\u6295\u7a3f\u3057\u591a\u304f\u306e\u30dd\u30a4\u30f3\u30c8\u3092\u7372\u5f97\u3057\u307e\u3057\u3087\u3046\u3002</p><br>\r\n\r\n<h1>\u62bd\u9078\u3067\u6bce\u6708\u8cb0\u3048\u308b20\u540d\uff01</h1>\r\n<p>\u305d\u306e\u6708\u306b1\u4ef6\u3067\u3082\u53e3\u30b3\u30df\u3092\u884c\u3063\u305f\u770b\u8b77\u5e2b\u306e\u65b9\u306b\u3001\u62bd\u9078\u306720\u540d\u69d8\u3001\u30a2\u30de\u30be\u30f3\u30ae\u30d5\u30c8\u5238\u3092\u30d7\u30ec\u30bc\u30f3\u30c8\u3057\u3066\u3044\u307e\u3059\u3002<br>\r\n\uff08\u62bd\u9078\u306e\u305f\u3081\u3001\u7372\u5f97\u30dd\u30a4\u30f3\u30c8\u4e0a\u4f4d20\u540d\u69d8\u3082\u8cb0\u3048\u308b\u30c1\u30e3\u30f3\u30b9\u304c\u3042\u308a\u3001\u5408\u8a08\u30676,000\u5186\u5206\u3068\u306a\u308a\u307e\u3059\u3002\uff09\r\n\u662f\u975e\u3001\u591a\u304f\u306e\u53e3\u30b3\u30df\u6295\u7a3f\u3092\u304a\u9858\u3044\u3044\u305f\u3057\u307e\u3059\u3002</p><br>\r\n\r\n<h1>\u3054\u6ce8\u610f\u4e8b\u9805</h1>\r\n\r\n<ul>\r\n      <li>Amazon\u30ae\u30d5\u30c8\u5238\u306f<b>\u5bfe\u8c61\u6708\u306e\u7fcc\u6708\u306e15\u65e5\u6642\u70b9</b>\u3067\u3001\u30d7\u30ed\u30d5\u30a3\u30fc\u30eb\u306b\u767b\u9332\u304c\u3042\u308b\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306b\u5bfe\u3057\u3066\u8d08\u3089\u308c\u307e\u3059\u3002</li><br>\r\n      <li>15\u65e5\u6642\u70b9\u3067\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u304c\u672a\u8a2d\u5b9a\u3001\u9001\u4fe1\u304c\u51fa\u6765\u306a\u3044\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9\u306a\u3069\u3092\u8a2d\u5b9a\u3057\u3066\u3044\u308b\u65b9\u306f\u3001<b>Amazon\u30ae\u30d5\u30c8\u5238\u306e\u5bfe\u8c61\u5916</b>\u3068\u306a\u308b\u305f\u3081\u3054\u6ce8\u610f\u304f\u3060\u3055\u3044\u3002\r\n</li><br>\r\n      <li>\u5229\u7528\u898f\u7d04\u306b\u53cd\u3059\u308b\u884c\u70ba\u3092\u884c\u3063\u305f\u65b9\u3001<b>\u4e0d\u6b63\u306b\u865a\u507d\u306e\u53e3\u30b3\u30df\u3092\u5927\u91cf\u306b\u6295\u7a3f\u3055\u308c\u308b\u65b9</b>\u3001\u30a2\u30ab\u30a6\u30f3\u30c8\u5236\u9650\u4e2d\u306e\u65b9\u3001\u4e0d\u6b63\u884c\u70ba\u3068\u5224\u65ad\u3055\u308c\u305f\u65b9\u306f\u3001Amazon\u30ae\u30d5\u30c8\u5238\u306e\u5bfe\u8c61\u5916\u3068\u306a\u308a\u307e\u3059\u3002\r\n</li><br>\r\n  <li>Amazon\u30ae\u30d5\u30c8\u5238\u306e\u767a\u9001\u306f\u3001\u7fcc\u6708\u306e15\u65e5\uff5e\u672b\u65e5\u307e\u3067\u306e\u9593\u3068\u306a\u308a\u307e\u3059\u3002Amazon\u30ae\u30d5\u30c8\u5238\u306e\u5f53\u9078\u8005\u306f\u300c\u304a\u77e5\u3089\u305b\u300d\u3088\u308a\u3054\u5831\u544a\u3057\u3066\u304a\u308a\u307e\u3059\u3002\r\n</li>\r\n</ul>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-21T03:06:11.366Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 7,
+    "fields": {
+      "title": "\u304a\u554f\u3044\u5408\u308f\u305b",
+      "content": "\u304a\u554f\u3044\u5408\u308f\u305b",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 8,
+    "fields": {
+      "title": "\u4f1a\u54e1\u306e\u30e9\u30f3\u30af\u306b\u3064\u3044\u3066",
+      "content": "\u4f1a\u54e1\u306e\u30e9\u30f3\u30af\u306b\u3064\u3044\u3066",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 9,
+    "fields": {
+      "title": "\u53e3\u30b3\u30df\u306e\u7c21\u5358\u306a\u30eb\u30fc\u30eb",
+      "content": "<h1 style=\"color:#000DFF\">\u53e3\u30b3\u30df\u306e\u7c21\u5358\u306a\u30eb\u30fc\u30eb</h1>\r\n<h1>\u53e3\u30b3\u30df\u306e\u7c21\u5358\u306a\u30eb\u30fc\u30eb</h1><style>h1 {color: #000DFF}</style>\r\n<p id=\"test_text\">CSS\u30c6\u30b9\u30c8</p>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-09-20T07:40:15.260Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 10,
+    "fields": {
+      "title": "\u5229\u7528\u898f\u7d04",
+      "content": "<h1>\u5229\u7528\u898f\u7d04</h1>\r\n\r\n\r\n<style>h1 {color: #000DFF}</style>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-09-22T02:20:22.017Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 11,
+    "fields": {
+      "title": "\u53e3\u30b3\u30df\u30ac\u30a4\u30c9\u30e9\u30a4\u30f3",
+      "content": "\u53e3\u30b3\u30df\u30ac\u30a4\u30c9\u30e9\u30a4\u30f3",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 12,
+    "fields": {
+      "title": "\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc\u30dd\u30ea\u30b7\u30fc",
+      "content": "<div class=\"content-all\">\r\n<h1>\u30c6\u30b9\u30c8</h1>\r\n<p>\u306f\u305f\u3089\u304d\u30ca\u30fc\u30b9\u300chttps://hataraki-nurse.com\u300d\uff08\u4ee5\u4e0b\u3001\u300c\u5f53\u30b5\u30a4\u30c8\u300d\u3068\u3044\u3046\uff09\u3092\u904b\u55b6\u3057\u3066\u3044\u308b\u682a\u5f0f\u4f1a\u793epeko\uff08\u4ee5\u4e0b\u3001\u300c\u5f53\u793e\u300d\u3068\u3044\u3046\uff09\u306f\u5229\u7528\u3059\u308b\u30e6\u30fc\u30b6\u30fc\u306e\u500b\u4eba\u60c5\u5831\u306e\u91cd\u8981\u6027\u3092\u7406\u89e3\u3057\u3001\u300c\u500b\u4eba\u60c5\u5831\u4fdd\u8b77\u7b49\u306b\u95a2\u3059\u308b\u6cd5\u5f8b\u300d\u3001\u305d\u306e\u4ed6\u95a2\u4fc2\u6cd5\u4ee4\u3001\u30ac\u30a4\u30c9\u30e9\u30a4\u30f3\u7b49\u3092\u53b3\u5b88\u3059\u308b\u3068\u3068\u3082\u306b\u3001\u4ee5\u4e0b\u306e\u30d7\u30e9\u30a4\u30d0\u30b7\u30fc\u30dd\u30ea\u30b7\u30fc\u3092\u5236\u5b9a\u3057\u3001\u30e6\u30fc\u30b6\u30fc\u69d8\u306e\u500b\u4eba\u60c5\u5831\u4fdd\u8b77\u306e\u5fb9\u5e95\u3068\u30b3\u30f3\u30d7\u30e9\u30a4\u30a2\u30f3\u30b9\u306e\u78ba\u4fdd\u306b\u52aa\u3081\u307e\u3059\u3002</p>\r\n\r\n<p>\u307e\u305f\u3001\u300c\u500b\u4eba\u60c5\u5831\u300d\u3068\u306f\u3001\u751f\u5b58\u3059\u308b\u500b\u4eba\u306b\u95a2\u3059\u308b\u60c5\u5831\u3067\u3042\u3063\u3066\u3001\u5f53\u8a72\u60c5\u5831\u306b\u542b\u307e\u308c\u308b\u6c0f\u540d\u3001\u751f\u5e74\u6708\u65e5\u305d\u306e\u4ed6\u306e\u8a18\u8ff0\u7b49\u306b\u3088\u308a\u7279\u5b9a\u306e\u500b\u4eba\u3092\u8b58\u5225\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u308b\u3082\u306e\uff08\u4ed6\u306e\u60c5\u5831\u3068\u5bb9\u6613\u306b\u7167\u5408\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u3001\u305d\u308c\u306b\u3088\u308a\u7279\u5b9a\u306e\u500b\u4eba\u3092\u8b58\u5225\u3059\u308b\u3053\u3068\u304c\u3067\u304d\u308b\u3053\u3068\u3068\u306a\u308b\u3082\u306e\u3092\u542b\u307f\u307e\u3059\u3002\uff09\u3092\u3044\u3044\u307e\u3059\u3002</p>\r\n<h2 class=\"top-hcss\">\u30c6\u30b9\u30c8</h2>\r\n<h2>1.\u500b\u4eba\u60c5\u5831\u306e\u53d6\u5f97</h2>\r\n<p>\u5f53\u793e\u3067\u30e6\u30fc\u30b6\u30fc\u306e\u500b\u4eba\u60c5\u5831\u3092\u53d6\u5f97\u3059\u308b\u969b\u306f\u3001\u5229\u7528\u76ee\u7684\u3092\u660e\u78ba\u306b\u3057\u307e\u3059\u3002</p>\r\n\r\n<p>\u500b\u4eba\u60c5\u5831\u3092\u53d6\u5f97\u3057\u305f\u30e6\u30fc\u30b6\u30fc\u69d8\u306b\u63d0\u793a\u3057\u305f\u76ee\u7684\u4ee5\u5916\u306e\u5229\u7528\u306f\u4e00\u5207\u3044\u305f\u3057\u307e\u305b\u3093\u3002</p></div>",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 13,
+    "fields": {
+      "title": "\u30b5\u30a4\u30c8\u30de\u30c3\u30d7",
+      "content": "\u30b5\u30a4\u30c8\u30de\u30c3\u30d7",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 14,
+    "fields": {
+      "title": "\u904b\u55b6\u4f1a\u793e",
+      "content": "\u904b\u55b6\u4f1a\u793e",
+      "created_at": "2020-08-20T06:40:33.277Z",
+      "updated_at": "2020-08-20T06:40:33.277Z"
+    }
+  },
+  {
+    "model": "common.policy",
+    "pk": 15,
+    "fields": {
+      "title": "CSS",
+      "content": "<style>@charset \"utf-8\";\r\n#blog_content ul, #blog_content li{\r\n\t\r\n}\r\n#blog_content h1{\r\nposition: relative;\r\n  text-align: center;\r\n  margin-bottom: 1em;\r\n\tfont-size:32px!important;\r\n}\r\n/* \u6587\u5b57\u8abf\u6574 */\r\n#content-all p{\r\nline-height: 2;\r\n    margin: 0 0 1.6em;\r\n}\r\n/**\u30c8\u30c3\u30d7\u30da\u30fc\u30b8h2**/\r\n#top-hcss{\r\n\tposition: relative;\r\n  text-align: center;\r\n  margin-bottom: 1em;\r\n\tfont-size:32px!important;\r\n\t}\r\n\r\n#top-hcss:before {\r\n\tcontent: '';\r\n  position: absolute;\r\n  bottom: -15px;\r\n  display: inline-block;\r\n  width: 80px;\r\n  height: 6px;\r\n  left: 50%;\r\n  -webkit-transform: translateX(-50%);\r\n  transform: translateX(-50%);\r\n  background-color: #c00000;\r\n}\r\n\r\n/*test*/\r\n#test_text {\r\n    color: red;\r\n}</style>",
+      "created_at": "2020-08-20T06:40:33Z",
+      "updated_at": "2020-08-20T06:40:33Z"
+    }
+  }
+]
