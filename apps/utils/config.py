@@ -9,3 +9,7 @@ class AvatarDefault:
 
 class Region:
     nationwide = '全国対応'
+
+
+class PasswordRegex:
+    password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*?]{8,50}$"

@@ -64,3 +64,11 @@ class ErrorCode:
         Error.code: 13,
         Error.message: 'Password invalid'
     }
+    login_fail = {
+        Error.code: 14,
+        Error.message: 'Login fail'
+    }
+    permission = {
+        Error.code: 15,
+        Error.message: 'Bạn không phải là sub_admin'
+    }

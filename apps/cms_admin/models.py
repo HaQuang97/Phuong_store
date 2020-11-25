@@ -1,6 +1,20 @@
+from jsonfield import JSONField
 from django.db import models
 
 from apps.authentication.models import User
+from apps.utils.constants import ImageType, OrderStatusType
+
+IMAGE_TYPE = (
+    (ImageType.IMAGE_TYPE_1.value, "ImageType1"),
+    (ImageType.IMAGE_TYPE_2.value, "ImageType2"),
+    (ImageType.IMAGE_TYPE_3.value, "ImageType3"),
+)
+
+ORDER_STATUS_TYPE = (
+    (OrderStatusType.WAIT_ACCEPT.value, "WaitAccept"),
+    (OrderStatusType.ACCEPT.value, "Accept"),
+    (OrderStatusType.SUCCESS.value, "Success"),
+)
 
 
 class Category(models.Model):
@@ -17,14 +31,20 @@ class Category(models.Model):
         return '{}'.format(self.id)
 
 
+class ItemImages(models.Model):
+    image = models.ImageField(null=True, blank=True, upload_to='image_items/')
+    type_image = models.IntegerField(choices=IMAGE_TYPE, default=0)
+
+    class Meta:
+        db_table = 'item_images'
+
+
 class Items(models.Model):
     name = models.CharField(max_length=255, default=None)
     description = models.CharField(max_length=255, default=None)
     short_description = models.CharField(max_length=255, default=None)
-    image1 = models.ImageField(null=True, blank=True, upload_to='image_items/')
-    image2 = models.ImageField(null=True, blank=True, upload_to='image_items/')
-    image3 = models.ImageField(null=True, blank=True, upload_to='image_items/')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = JSONField(null=True, blank=True)
     price_temp = models.IntegerField(default=None)
     price = models.IntegerField(default=None)
     view_item = models.IntegerField(default=None)
@@ -55,12 +75,11 @@ class Comments(models.Model):
 
 
 class Orders(models.Model):
-    first_name = models.CharField(max_length=255, default=None)
-    last_name = models.CharField(max_length=255, default=None)
+    name = models.CharField(max_length=255, default=None)
     phone = models.IntegerField(default=None)
     address = models.CharField(max_length=255, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
+    status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)

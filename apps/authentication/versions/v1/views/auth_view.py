@@ -28,15 +28,15 @@ from apps.utils.views_helper import GenericViewSet, EmptySerializer
 class AuthenticationView:
     class AuthenticationViewSet(JSONWebTokenAPIView):
         serializer_class = LoginSerializer
-        
+
         def post(self, request, *args, **kwargs):
-            serializer = LoginSerializer(data=request.data)
+
+            serializer = self.get_serializer(data=request.data)
             if serializer.is_valid(raise_exception=True):
                 user = serializer.validated_data
                 time_token = int(datetime.timestamp(datetime.utcnow()))
                 Token.objects.create(user=user, token=time_token)
-                token = JWTToken(user, time_token).make_token(request, status=status.HTTP_200_OK)
-                return token
+                return JWTToken(user, time_token).make_token(status=status.HTTP_200_OK)
             else:
                 raise AuthenticationFailed
 
@@ -50,7 +50,22 @@ class UserCreateView:
     class UserCreateViewSet(GenericViewSet):
         serializer_class = UserCreateSerializer
         queryset = User.objects.all()
-        
+
+        def list(self, request, custom_queryset=None, custom_query_params=None, *args, **kwargs):
+            pass
+
+        def retrieve(self, request, custom_object=None, *args, **kwargs):
+            pass
+
+        def destroy(self, request, *args, **kwargs):
+            pass
+
+        def update(self, request, custom_instance=None, custom_data=None, *args, **kwargs):
+            pass
+
+        def partial_update(self, request, custom_instance=None, custom_data=None, *args, **kwargs):
+            pass
+
         def create(self, request, *args, **kwargs):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
@@ -71,7 +86,7 @@ class LogoutView:
         serializer_class = EmptySerializer
         queryset = User.objects.all()
         permission_classes = (IsAuthenticated,)
-        
+
         def create(self, request, *args, **kwargs):
             Token.objects.filter(user=request.user, token=request.auth.token).delete()
             general_response = rsp.Response(None).generate_response()
@@ -81,11 +96,11 @@ class LogoutView:
 class ChangePassWordViewSet(GenericViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = ChangePasswordSerializer
-    
+
     def get_object(self):
         obj = self.request.user
         return obj
-    
+
     def partial_update(self, request, custom_instance=None, custom_data=None, *args, **kwargs):
         obj = self.get_object()
         serializer = self.get_serializer(data=request.data)

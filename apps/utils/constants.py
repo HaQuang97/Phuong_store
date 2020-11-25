@@ -15,3 +15,15 @@ class Error:
 class UserStatus(Enum):
     ACTIVE = 1
     POLICY_VIOLATION = 2
+
+
+class ImageType(Enum):
+    IMAGE_TYPE_1 = 1
+    IMAGE_TYPE_2 = 2
+    IMAGE_TYPE_3 = 3
+
+
+class OrderStatusType(Enum):
+    WAIT_ACCEPT = 1
+    ACCEPT = 2
+    SUCCESS = 3

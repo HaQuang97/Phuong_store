@@ -1,22 +1,20 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
-from imagekit.models import ImageSpecField
-from pilkit.processors import ResizeToFill
 
 from apps.utils.constants import *
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, email, nickname, password=None):
+    def create_user(self, username, email, password=None):
         if not email:
             raise ValueError('must have an email address.')
-        usuario = self.model(email=self.normalize_email(email), username=username, nickname=nickname)
+        usuario = self.model(email=self.normalize_email(email), username=username)
         usuario.set_password(password)
         usuario.save(using=self._db)
         return usuario
 
-    def create_superuser(self, username, email, nickname, password):
-        usuario = self.create_user(email=email, username=username, password=password, nickname=nickname)
+    def create_superuser(self, username, email, password):
+        usuario = self.create_user(email=email, username=username, password=password)
         usuario.is_admin = True
         usuario.save(using=self._db)
         return usuario
@@ -38,13 +36,10 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, default=None)
     email = models.EmailField(max_length=255, unique=True, default=None)
     full_name = models.CharField(max_length=255, default=None)
-    phone = models.IntegerField(default=None)
+    phone = models.CharField(max_length=255, default=None)
+    address = models.CharField(max_length=255, default=None)
     gender = models.IntegerField(choices=CHOICE_GENDER, default=GenderType.MALE.value)
     birthday = models.DateField(blank=True, null=True)
-    rank = models.FloatField(default=None)
-    identification = models.IntegerField(default=None)
-    role_name = models.CharField(max_length=255, default=None)
-    role_description = models.CharField(max_length=255, default=None)
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_sub_admin = models.BooleanField(default=False)
