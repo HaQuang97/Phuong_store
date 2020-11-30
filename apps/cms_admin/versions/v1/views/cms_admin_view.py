@@ -30,6 +30,10 @@ class CmsAdminView:
                                  description="ID of Order",
                                  type=openapi.TYPE_INTEGER, required=True)
 
+    category_id = openapi.Parameter('category_id', openapi.IN_QUERY,
+                                    description="ID of Category",
+                                    type=openapi.TYPE_INTEGER, required=True)
+
     @method_decorator(name='list', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='create', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='retrieve', decorator=swagger_auto_schema(auto_schema=None))
@@ -38,6 +42,7 @@ class CmsAdminView:
     @method_decorator(name='destroy', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='change_role_account', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
+    @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
     class CmsAdminViewViewSet(GenericViewSet):
         queryset = User.objects.all()
         action_serializers = {
@@ -123,7 +128,7 @@ class CmsAdminView:
                 data = Category.objects.filter(id=serializer.validated_data['category_id'])
                 data.update(
                     name=serializer.validated_data['name'],
-                    description=serializer.validated_data['description']
+                    descriptipon=serializer.validated_data['description']
                 )
             return super().custom_response({})
 
@@ -142,6 +147,14 @@ class CmsAdminView:
                 url_path='list-item')
         def list_items(self, request, *args, **kwargs):
             query = Items.objects.all().order_by('-updated_at')
+            data = ListItemResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+                url_path='list-item-by-category_id')
+        def list_items_by_category(self, request, *args, **kwargs):
+            category_id = int(request.query_params['category_id'])
+            query = Items.objects.filter(category_id=category_id).order_by('-updated_at')
             data = ListItemResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
