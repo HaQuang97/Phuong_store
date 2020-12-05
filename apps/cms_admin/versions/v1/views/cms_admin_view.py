@@ -34,6 +34,10 @@ class CmsAdminView:
                                     description="ID of Category",
                                     type=openapi.TYPE_INTEGER, required=True)
 
+    item_id = openapi.Parameter('item_id', openapi.IN_QUERY,
+                                    description="ID of Item",
+                                    type=openapi.TYPE_INTEGER, required=True)
+
     @method_decorator(name='list', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='create', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='retrieve', decorator=swagger_auto_schema(auto_schema=None))
@@ -43,6 +47,7 @@ class CmsAdminView:
     @method_decorator(name='change_role_account', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
     @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
+    @method_decorator(name="get_detail_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     class CmsAdminViewViewSet(GenericViewSet):
         queryset = User.objects.all()
         action_serializers = {
@@ -208,6 +213,14 @@ class CmsAdminView:
                     view_item=0
                 )
             return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['get'],
+                url_path='get-detail-item')
+        def get_detail_item(self, request, *args, **kwargs):
+            item_id = int(request.query_params['item_id'])
+            query = Items.objects.filter(id=item_id).order_by('-updated_at')
+            data = ListItemResponseSerializer(query, many=True).data
+            return super().custom_response(data)
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
                 url_path='delete-item')
