@@ -109,3 +109,38 @@ class UpdateOrderRequestSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+class AddNewSupplierRequestSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255, required=True)
+    description = serializers.CharField(max_length=255, required=False)
+    address = serializers.CharField(max_length=255, required=False)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class UpdateSupplierRequestSerializer(serializers.Serializer):
+    supplier_id = serializers.IntegerField(required=True)
+    name = serializers.CharField(max_length=255, required=False)
+    description = serializers.CharField(max_length=255, required=False)
+    address = serializers.CharField(max_length=255, required=False)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class DeleteSupplierRequestSerializer(serializers.Serializer):
+    supplier_id = serializers.ListField(child=serializers.IntegerField(min_value=0, required=True), required=True)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass

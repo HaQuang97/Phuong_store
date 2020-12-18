@@ -13,9 +13,9 @@ from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDeta
 from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCategoryRequestSerializer, \
     UpdateCategoryRequestSerializer, DeleteCategoryRequestSerializer, AddNewItemRequestSerializer, \
     UpdateItemRequestSerializer, DeleteItemRequestSerializer, UploadImageItemRequestSerializer, \
-    AddNewOrderRequestSerializer, UpdateOrderRequestSerializer
+    AddNewOrderRequestSerializer, UpdateOrderRequestSerializer, AddNewSupplierRequestSerializer, DeleteSupplierRequestSerializer, UpdateSupplierRequestSerializer
 from apps.cms_admin.versions.v1.serializers.response_serializer import ListUserResponseSerializer, \
-    ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer
+    ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer,ListSupplierResponseSerializer
 from apps.utils.error_code import ErrorCode
 from apps.utils.permission import IsAdminOrSubAdmin
 from apps.utils.views_helper import GenericViewSet
@@ -56,6 +56,7 @@ class CmsAdminView:
         action_serializers = {
             "list_user_response": ListUserResponseSerializer,
             "list_category_response": ListCategoryResponseSerializer,
+            "list_supplier_response": ListSupplierResponseSerializer,
             "add_new_category_request": AddNewCategoryRequestSerializer,
             "add_new_category_response": ListCategoryResponseSerializer,
             "update_category_request": UpdateCategoryRequestSerializer,

@@ -26,3 +26,9 @@ class ListOrderResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Orders
         fields = "__all__"
+
+
+class ListSupplierResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Orders
+        fields = "__all__"
