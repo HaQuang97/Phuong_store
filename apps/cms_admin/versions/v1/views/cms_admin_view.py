@@ -37,6 +37,9 @@ class CmsAdminView:
     item_id = openapi.Parameter('item_id', openapi.IN_QUERY,
                                     description="ID of Item",
                                     type=openapi.TYPE_INTEGER, required=True)
+    supplier_id = openapi.Parameter('supplier_id', openapi.IN_QUERY,
+                                description="ID of Supplier",
+                                type=openapi.TYPE_INTEGER, required=True)
 
     @method_decorator(name='list', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='create', decorator=swagger_auto_schema(auto_schema=None))
@@ -301,3 +304,17 @@ class CmsAdminView:
                 "total_price": order_filter.total_price
             }
             return super().custom_response(detail)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+                url_path='statistic')
+        def statistic(self, request, *args, **kwargs):
+            count_category = Category.objects.count()
+            count_items = Items.objects.count()
+            count_orders = Orders.objects.count()
+            response = {
+                'category': count_category,
+                'items': count_items,
+                'orders': count_orders,
+            }
+            return super().custom_response(response)
+

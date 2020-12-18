@@ -41,9 +41,9 @@ class ItemImages(models.Model):
 
 
 class Items(models.Model):
-    name = models.CharField(max_length=255, default=None)
-    description = models.CharField(max_length=255, default=None)
-    short_description = models.CharField(max_length=255, default=None)
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    short_description = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     image = JSONField(null=True, blank=True)
     price_temp = models.IntegerField(default=None)
@@ -61,7 +61,7 @@ class Items(models.Model):
 
 
 class Comments(models.Model):
-    comment = models.CharField(max_length=255, default=None)
+    comment = models.CharField(max_length=255)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -76,9 +76,9 @@ class Comments(models.Model):
 
 
 class Orders(models.Model):
-    name = models.CharField(max_length=255, default=None)
+    name = models.CharField(max_length=255)
     phone = models.IntegerField(default=None)
-    address = models.CharField(max_length=255, default=None)
+    address = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,6 +104,21 @@ class OrderDetails(models.Model):
 
     class Meta:
         db_table = 'order_details'
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+
+class Supplier(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'supplier'
 
     def __str__(self):
         return '{}'.format(self.id)
