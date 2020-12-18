@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
     def create_superuser(self, username, email, password):
         usuario = self.create_user(email=email, username=username, password=password)
         usuario.is_admin = True
+        usuario.is_active = True
         usuario.save(using=self._db)
         return usuario
 
@@ -33,11 +34,11 @@ CHOICE_STATUS = (
 
 
 class User(AbstractBaseUser):
-    username = models.CharField(max_length=255, default=None)
+    username = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(max_length=255, unique=True, default=None)
-    full_name = models.CharField(max_length=255, default=None)
-    phone = models.CharField(max_length=255, default=None)
-    address = models.CharField(max_length=255, default=None)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
     gender = models.IntegerField(choices=CHOICE_GENDER, default=GenderType.MALE.value)
     birthday = models.DateField(blank=True, null=True)
     is_active = models.BooleanField(default=False)

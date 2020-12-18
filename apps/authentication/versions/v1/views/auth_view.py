@@ -36,7 +36,7 @@ class AuthenticationView:
                 user = serializer.validated_data
                 time_token = int(datetime.timestamp(datetime.utcnow()))
                 Token.objects.create(user=user, token=time_token)
-                return JWTToken(user, time_token).make_token(status=status.HTTP_200_OK)
+                return JWTToken(user, time_token).make_token(user, status=status.HTTP_200_OK)
             else:
                 raise AuthenticationFailed
 

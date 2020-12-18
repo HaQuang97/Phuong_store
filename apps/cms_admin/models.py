@@ -1,5 +1,6 @@
-from jsonfield import JSONField
+# from jsonfield import JSONField
 from django.db import models
+from django.db.models import JSONField
 
 from apps.authentication.models import User
 from apps.utils.constants import ImageType, OrderStatusType

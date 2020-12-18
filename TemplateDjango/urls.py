@@ -12,8 +12,7 @@ from apps.authentication.urls import urlpatterns as auth_urlpatterns
 from apps.cms_admin.urls import urlpatterns as cms_admin
 
 schema_view = get_schema_view(
-    openapi.Info(
-        title="TemplateDjango API",
+    openapi.Info(        title="TemplateDjango API",
         default_version='v1',
         description="Document of TemplateDjango API",
         contact=openapi.Contact(email="atnguyenhuong@gmail.com"),
