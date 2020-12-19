@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.authentication.models import User
-from apps.cms_admin.models import Category, Items, Orders, Supplier
+from apps.cms_admin.models import Category, Items, Orders, Supplier, Comments
 
 
 class ListUserResponseSerializer(serializers.ModelSerializer):
@@ -19,6 +19,12 @@ class ListCategoryResponseSerializer(serializers.ModelSerializer):
 class ListItemResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Items
+        fields = "__all__"
+
+
+class ListCommentResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comments
         fields = "__all__"
 
 

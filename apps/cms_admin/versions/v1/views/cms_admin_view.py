@@ -9,15 +9,16 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
-from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails, Supplier
+from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails, Supplier, Comments
 from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCategoryRequestSerializer, \
     UpdateCategoryRequestSerializer, DeleteCategoryRequestSerializer, AddNewItemRequestSerializer, \
     UpdateItemRequestSerializer, DeleteItemRequestSerializer, UploadImageItemRequestSerializer, \
     AddNewOrderRequestSerializer, UpdateOrderRequestSerializer, AddNewSupplierRequestSerializer, \
-    DeleteSupplierRequestSerializer, UpdateSupplierRequestSerializer
+    DeleteSupplierRequestSerializer, UpdateSupplierRequestSerializer, UpdateQuantityRequestSerializer, \
+    DeleteCommentRequestSerializer, UpdateCommentRequestSerializer, AddNewCommentRequestSerializer
 from apps.cms_admin.versions.v1.serializers.response_serializer import ListUserResponseSerializer, \
     ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer, \
-    ListSupplierResponseSerializer
+    ListSupplierResponseSerializer, ListCommentResponseSerializer
 from apps.utils.error_code import ErrorCode
 from apps.utils.permission import IsAdminOrSubAdmin
 from apps.utils.views_helper import GenericViewSet
@@ -42,6 +43,9 @@ class CmsAdminView:
     supplier_id = openapi.Parameter('supplier_id', openapi.IN_QUERY,
                                     description="ID of Supplier",
                                     type=openapi.TYPE_INTEGER, required=True)
+    comment_id = openapi.Parameter('comment_id', openapi.IN_QUERY,
+                                   description="ID of Comments",
+                                   type=openapi.TYPE_INTEGER, required=True)
 
     @method_decorator(name='list', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='create', decorator=swagger_auto_schema(auto_schema=None))
@@ -53,6 +57,7 @@ class CmsAdminView:
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
     @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
     @method_decorator(name="get_detail_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
+    @method_decorator(name="update_quantity", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     @method_decorator(name="supplier_detail", decorator=swagger_auto_schema(manual_parameters=[supplier_id]))
     class CmsAdminViewViewSet(GenericViewSet):
         queryset = User.objects.all()
@@ -63,9 +68,12 @@ class CmsAdminView:
             "add_new_category_request": AddNewCategoryRequestSerializer,
             "add_new_category_response": ListCategoryResponseSerializer,
             "add_new_supplier_request": AddNewSupplierRequestSerializer,
+            "add_new_comment_request": AddNewCommentRequestSerializer,
             "update_supplier_request": UpdateSupplierRequestSerializer,
             "update_category_request": UpdateCategoryRequestSerializer,
+            "update_comment_request": UpdateCommentRequestSerializer,
             'delete_category_request': DeleteCategoryRequestSerializer,
+            "delete_comment_request": DeleteCommentRequestSerializer,
             "delete_supplier_request": DeleteSupplierRequestSerializer,
             "list_item_response": ListItemResponseSerializer,
             "add_new_item_request": AddNewItemRequestSerializer,
@@ -74,7 +82,8 @@ class CmsAdminView:
             "delete_item_request": DeleteItemRequestSerializer,
             "list_order_response": ListOrderResponseSerializer,
             "add_new_order_request": AddNewOrderRequestSerializer,
-            "update_order_request": UpdateOrderRequestSerializer
+            "update_order_request": UpdateOrderRequestSerializer,
+            "update_quantity_request": UpdateQuantityRequestSerializer,
         }
 
         def list(self, request, custom_queryset=None, custom_query_params=None, *args, **kwargs):
@@ -253,11 +262,23 @@ class CmsAdminView:
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
                     image=json.dumps(serializer.validated_data['image']),
+                    quantity=serializer.validated_data['quantity'],
                     price_temp=serializer.validated_data['price_temp'],
                     price=serializer.validated_data['price'],
                     view_item=0
                 )
             return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['put'],
+                url_path='update_quantity')
+        def update_quantity(self, request, *args, **kwargs):
+            serializer = UpdateQuantityRequestSerializer(data=request.data, context=self.get_serializer_context())
+            serializer.is_valid(raise_exception=True)
+            item_filter = Items.objects.filter(id=request.query_params['item_id']).get()
+            item_filter.quantity = serializer.validated_data['quantity']
+            item_filter.save()
+            res = ListItemResponseSerializer(item_filter).data
+            return super().custom_response(res)
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
                 url_path='update-item')
@@ -269,6 +290,7 @@ class CmsAdminView:
                     name=serializer.validated_data['name'],
                     category_id=serializer.validated_data['category_id'],
                     supplier_id=serializer.validated_data['supplier_id'],
+                    quantity=serializer.validated_data['quantity'],
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
                     image=json.dumps(serializer.validated_data['image']),
@@ -378,3 +400,48 @@ class CmsAdminView:
                 'orders': count_orders,
             }
             return super().custom_response(response)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+                url_path='list-comment')
+        def list_comment(self, request, *args, **kwargs):
+            query = Comments.objects.all().order_by('-updated_at')
+            data = ListCategoryResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='add-new-comment')
+        def add_new_comment(self, request, *args, **kwargs):
+            serializer = AddNewCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                Comments.objects.create(
+                    comment=serializer.validated_data['comment'],
+                    item_id=serializer.validated_data['item_id'],
+                    user_id=serializer.validated_data['user_id'],
+                    rating=serializer.validated_data['rating']
+                )
+            return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='update-comment')
+        def update_comment(self, request, *args, **kwargs):
+            serializer = UpdateCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                data = Comments.objects.filter(id=serializer.validated_data['category_id'])
+                data.update(
+                    comment=serializer.validated_data['comment'],
+                    item_id=serializer.validated_data['item_id'],
+                    user_id=serializer.validated_data['user_id'],
+                    rating=serializer.validated_data['rating']
+                )
+            return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='delete-comment')
+        def delete_comment(self, request, *args, **kwargs):
+            serializer = DeleteCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                comment_id_list = serializer.data['comment_id']
+                queryset = Comments.objects.filter(id__in=comment_id_list)
+                for item in queryset:
+                    item.delete()
+            return super().custom_response({})

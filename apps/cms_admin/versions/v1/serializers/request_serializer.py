@@ -86,6 +86,7 @@ class AddNewItemRequestSerializer(serializers.Serializer):
     category_id = serializers.IntegerField(required=True)
     supplier_id = serializers.IntegerField(required=True)
     name = serializers.CharField(max_length=255)
+    quantity = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=255)
     image = serializers.JSONField(required=False)
     short_description = serializers.CharField(max_length=255, required=False)
@@ -107,8 +108,19 @@ class UpdateItemRequestSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=255)
     short_description = serializers.CharField(max_length=255, required=False)
     image = serializers.JSONField(required=False)
+    quantity = serializers.IntegerField(required=True)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class UpdateQuantityRequestSerializer(serializers.Serializer):
+    quantity = serializers.IntegerField(required=True)
 
     def update(self, instance, validated_data):
         pass
@@ -141,6 +153,42 @@ class AddNewOrderRequestSerializer(serializers.Serializer):
 class UpdateOrderRequestSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     status = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class AddNewCommentRequestSerializer(serializers.Serializer):
+    comment = serializers.CharField(max_length=255, required=True)
+    item_id = serializers.IntegerField()
+    user_id = serializers.IntegerField()
+    rating = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class UpdateCommentRequestSerializer(serializers.Serializer):
+    comment = serializers.CharField(max_length=255, required=True)
+    item_id = serializers.IntegerField()
+    user_id = serializers.IntegerField()
+    rating = serializers.IntegerField()
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class DeleteCommentRequestSerializer(serializers.Serializer):
+    comment_id = serializers.ListField(child=serializers.IntegerField(min_value=0, required=True), required=True)
 
     def update(self, instance, validated_data):
         pass
