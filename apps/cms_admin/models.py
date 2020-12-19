@@ -40,11 +40,27 @@ class ItemImages(models.Model):
         db_table = 'item_images'
 
 
+class Supplier(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'suppliers'
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+
 class Items(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     short_description = models.CharField(max_length=255)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     image = JSONField(null=True, blank=True)
     price_temp = models.IntegerField(default=None)
     price = models.IntegerField(default=None)
@@ -109,16 +125,3 @@ class OrderDetails(models.Model):
         return '{}'.format(self.id)
 
 
-class Supplier(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
-
-    class Meta:
-        db_table = 'supplier'
-
-    def __str__(self):
-        return '{}'.format(self.id)

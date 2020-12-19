@@ -9,13 +9,15 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
-from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails
+from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails, Supplier
 from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCategoryRequestSerializer, \
     UpdateCategoryRequestSerializer, DeleteCategoryRequestSerializer, AddNewItemRequestSerializer, \
     UpdateItemRequestSerializer, DeleteItemRequestSerializer, UploadImageItemRequestSerializer, \
-    AddNewOrderRequestSerializer, UpdateOrderRequestSerializer, AddNewSupplierRequestSerializer, DeleteSupplierRequestSerializer, UpdateSupplierRequestSerializer
+    AddNewOrderRequestSerializer, UpdateOrderRequestSerializer, AddNewSupplierRequestSerializer, \
+    DeleteSupplierRequestSerializer, UpdateSupplierRequestSerializer
 from apps.cms_admin.versions.v1.serializers.response_serializer import ListUserResponseSerializer, \
-    ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer,ListSupplierResponseSerializer
+    ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer, \
+    ListSupplierResponseSerializer
 from apps.utils.error_code import ErrorCode
 from apps.utils.permission import IsAdminOrSubAdmin
 from apps.utils.views_helper import GenericViewSet
@@ -35,11 +37,11 @@ class CmsAdminView:
                                     type=openapi.TYPE_INTEGER, required=True)
 
     item_id = openapi.Parameter('item_id', openapi.IN_QUERY,
-                                    description="ID of Item",
-                                    type=openapi.TYPE_INTEGER, required=True)
-    supplier_id = openapi.Parameter('supplier_id', openapi.IN_QUERY,
-                                description="ID of Supplier",
+                                description="ID of Item",
                                 type=openapi.TYPE_INTEGER, required=True)
+    supplier_id = openapi.Parameter('supplier_id', openapi.IN_QUERY,
+                                    description="ID of Supplier",
+                                    type=openapi.TYPE_INTEGER, required=True)
 
     @method_decorator(name='list', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='create', decorator=swagger_auto_schema(auto_schema=None))
@@ -51,6 +53,7 @@ class CmsAdminView:
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
     @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
     @method_decorator(name="get_detail_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
+    @method_decorator(name="supplier_detail", decorator=swagger_auto_schema(manual_parameters=[supplier_id]))
     class CmsAdminViewViewSet(GenericViewSet):
         queryset = User.objects.all()
         action_serializers = {
@@ -59,8 +62,11 @@ class CmsAdminView:
             "list_supplier_response": ListSupplierResponseSerializer,
             "add_new_category_request": AddNewCategoryRequestSerializer,
             "add_new_category_response": ListCategoryResponseSerializer,
+            "add_new_supplier_request": AddNewSupplierRequestSerializer,
+            "update_supplier_request": UpdateSupplierRequestSerializer,
             "update_category_request": UpdateCategoryRequestSerializer,
             'delete_category_request': DeleteCategoryRequestSerializer,
+            "delete_supplier_request": DeleteSupplierRequestSerializer,
             "list_item_response": ListItemResponseSerializer,
             "add_new_item_request": AddNewItemRequestSerializer,
             'upload_image_item_request': UploadImageItemRequestSerializer,
@@ -137,7 +143,7 @@ class CmsAdminView:
                 data = Category.objects.filter(id=serializer.validated_data['category_id'])
                 data.update(
                     name=serializer.validated_data['name'],
-                    descriptipon=serializer.validated_data['description']
+                    description=serializer.validated_data['description']
                 )
             return super().custom_response({})
 
@@ -184,6 +190,57 @@ class CmsAdminView:
                 })
             return super().custom_response(response)
 
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+                url_path='list-supplier')
+        def list_supplier(self, request, *args, **kwargs):
+            query = Supplier.objects.all().order_by('-updated_at')
+            data = ListSupplierResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='add-new-supplier')
+        def add_new_supplier(self, request, *args, **kwargs):
+            serializer = AddNewSupplierRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                Supplier.objects.create(
+                    name=serializer.validated_data['name'],
+                    description=serializer.validated_data['description'],
+                    address=serializer.validated_data['address']
+                )
+            return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+                url_path='supplier_detail')
+        def supplier_detail(self, request, *args, **kwargs):
+            supplier_id = int(request.query_params['supplier_id'])
+            query = Items.objects.filter(supplier_id=supplier_id).order_by('-updated_at')
+            data = ListItemResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='update-supplier')
+        def update_supplier(self, request, *args, **kwargs):
+            serializer = UpdateSupplierRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                data = Supplier.objects.filter(id=serializer.validated_data['supplier_id'])
+                data.update(
+                    name=serializer.validated_data['name'],
+                    description=serializer.validated_data['description'],
+                    address=serializer.validated_data['address']
+                )
+            return super().custom_response({})
+
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+                url_path='delete-supplier')
+        def delete_supplier(self, request, *args, **kwargs):
+            serializer = DeleteSupplierRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                supplier_id_list = serializer.data['supplier_id']
+                queryset = Supplier.objects.filter(id__in=supplier_id_list)
+                for item in queryset:
+                    item.delete()
+            return super().custom_response({})
+
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
                 url_path='add-new-item')
         def add_new_item(self, request, *args, **kwargs):
@@ -191,6 +248,7 @@ class CmsAdminView:
             if serializer.is_valid(raise_exception=True):
                 Items.objects.create(
                     category_id=serializer.validated_data['category_id'],
+                    supplier_id=serializer.validated_data['supplier_id'],
                     name=serializer.validated_data['name'],
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
@@ -209,6 +267,8 @@ class CmsAdminView:
                 data = Items.objects.filter(id=serializer.validated_data['item_id'])
                 data.update(
                     name=serializer.validated_data['name'],
+                    category_id=serializer.validated_data['category_id'],
+                    supplier_id=serializer.validated_data['supplier_id'],
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
                     image=json.dumps(serializer.validated_data['image']),
@@ -318,4 +378,3 @@ class CmsAdminView:
                 'orders': count_orders,
             }
             return super().custom_response(response)
-

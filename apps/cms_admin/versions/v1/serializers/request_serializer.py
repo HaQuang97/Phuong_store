@@ -47,8 +47,44 @@ class UploadImageItemRequestSerializer(serializers.Serializer):
         pass
 
 
+class AddNewSupplierRequestSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=255, required=True)
+    description = serializers.CharField(max_length=255, required=False)
+    address = serializers.CharField(max_length=255, required=False)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class UpdateSupplierRequestSerializer(serializers.Serializer):
+    supplier_id = serializers.IntegerField(required=True)
+    name = serializers.CharField(max_length=255, required=False)
+    description = serializers.CharField(max_length=255, required=False)
+    address = serializers.CharField(max_length=255, required=False)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class DeleteSupplierRequestSerializer(serializers.Serializer):
+    supplier_id = serializers.ListField(child=serializers.IntegerField(min_value=0, required=True), required=True)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
 class AddNewItemRequestSerializer(serializers.Serializer):
     category_id = serializers.IntegerField(required=True)
+    supplier_id = serializers.IntegerField(required=True)
     name = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255)
     image = serializers.JSONField(required=False)
@@ -65,6 +101,8 @@ class AddNewItemRequestSerializer(serializers.Serializer):
 
 class UpdateItemRequestSerializer(serializers.Serializer):
     item_id = serializers.IntegerField(required=True)
+    category_id = serializers.IntegerField(required=True)
+    supplier_id = serializers.IntegerField(required=True)
     name = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255)
     short_description = serializers.CharField(max_length=255, required=False)
@@ -103,41 +141,6 @@ class AddNewOrderRequestSerializer(serializers.Serializer):
 class UpdateOrderRequestSerializer(serializers.Serializer):
     order_id = serializers.IntegerField()
     status = serializers.IntegerField()
-
-    def update(self, instance, validated_data):
-        pass
-
-    def create(self, validated_data):
-        pass
-
-
-class AddNewSupplierRequestSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255, required=True)
-    description = serializers.CharField(max_length=255, required=False)
-    address = serializers.CharField(max_length=255, required=False)
-
-    def update(self, instance, validated_data):
-        pass
-
-    def create(self, validated_data):
-        pass
-
-
-class UpdateSupplierRequestSerializer(serializers.Serializer):
-    supplier_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(max_length=255, required=False)
-    description = serializers.CharField(max_length=255, required=False)
-    address = serializers.CharField(max_length=255, required=False)
-
-    def update(self, instance, validated_data):
-        pass
-
-    def create(self, validated_data):
-        pass
-
-
-class DeleteSupplierRequestSerializer(serializers.Serializer):
-    supplier_id = serializers.ListField(child=serializers.IntegerField(min_value=0, required=True), required=True)
 
     def update(self, instance, validated_data):
         pass
