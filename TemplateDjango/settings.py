@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.authentication',
     'apps.cms_admin',
+    'apps.customer',
     'imagekit',
     'drf_yasg',
 ]
@@ -243,3 +244,8 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+EMAIL_HOST=env_config('EMAIL_HOST')
+EMAIL_PORT=env_config('EMAIL_PORT')
+EMAIL_HOST_USER=env_config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=env_config('EMAIL_HOST_PASSWORD')

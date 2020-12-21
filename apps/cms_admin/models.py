@@ -12,9 +12,12 @@ IMAGE_TYPE = (
 )
 
 ORDER_STATUS_TYPE = (
-    (OrderStatusType.WAIT_ACCEPT.value, "WaitAccept"),
-    (OrderStatusType.ACCEPT.value, "Accept"),
-    (OrderStatusType.SUCCESS.value, "Success"),
+    (OrderStatusType.INIT.value, "Init"),
+    (OrderStatusType.PAYMENT_SUCCESS.value, "Payment success"),
+    (OrderStatusType.PAYMENT_FAIL.value, "Payment fail"),
+    (OrderStatusType.DELIVERING.value, "Delivering"),
+    (OrderStatusType.COMPLETED.value, "Done"),
+    (OrderStatusType.REFUND.value, "Refund"),
 )
 
 

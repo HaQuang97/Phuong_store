@@ -22,6 +22,7 @@ from apps.authentication.models import User, Token
 from apps.authentication.utils.custom_auth import JWTToken
 from apps.authentication.versions.v1.serializers.request_serializer import LoginSerializer, UserCreateSerializer, \
     ChangePasswordSerializer
+from apps.utils import send_email
 from apps.utils.views_helper import GenericViewSet, EmptySerializer
 
 
@@ -71,6 +72,9 @@ class UserCreateView:
             serializer.is_valid(raise_exception=True)
             time_token = int(datetime.timestamp(datetime.utcnow()))
             instance = self.perform_create(serializer)
+
+            # todo send email here
+            # send_email()
             Token.objects.create(user=instance, token=time_token)
             token = JWTToken(instance, time_token, True).make_token(request, status=status.HTTP_201_CREATED)
             return token

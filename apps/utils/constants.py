@@ -24,6 +24,14 @@ class ImageType(Enum):
 
 
 class OrderStatusType(Enum):
-    WAIT_ACCEPT = 1
-    ACCEPT = 2
-    SUCCESS = 3
+    INIT = 0
+    PAYMENT_SUCCESS = 2
+    PAYMENT_FAIL = 2
+    DELIVERING = 3
+    COMPLETED = 4
+    REFUND = 5
+
+
+class PAYMENTSTATUSTYPE(Enum):
+    SUCCESS = 1
+    FAILURE = 2

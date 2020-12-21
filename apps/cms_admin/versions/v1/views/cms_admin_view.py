@@ -65,6 +65,7 @@ class CmsAdminView:
             "list_user_response": ListUserResponseSerializer,
             "list_category_response": ListCategoryResponseSerializer,
             "list_supplier_response": ListSupplierResponseSerializer,
+            "list_comment_response": ListCommentResponseSerializer,
             "add_new_category_request": AddNewCategoryRequestSerializer,
             "add_new_category_response": ListCategoryResponseSerializer,
             "add_new_supplier_request": AddNewSupplierRequestSerializer,
@@ -216,7 +217,9 @@ class CmsAdminView:
                     description=serializer.validated_data['description'],
                     address=serializer.validated_data['address']
                 )
-            return super().custom_response({})
+            return super().custom_response({
+                "test": "kkfda m"
+            })
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
                 url_path='supplier_detail')
@@ -394,10 +397,14 @@ class CmsAdminView:
             count_category = Category.objects.count()
             count_items = Items.objects.count()
             count_orders = Orders.objects.count()
+            count_supplier = Supplier.objects.count()
+            count_comments = Comments.objects.count()
             response = {
                 'category': count_category,
                 'items': count_items,
                 'orders': count_orders,
+                'supplier': count_supplier,
+                'comments': count_comments,
             }
             return super().custom_response(response)
 

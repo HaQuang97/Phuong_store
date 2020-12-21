@@ -9,7 +9,7 @@ router_auth.register(r'v1/logout', auth_view.LogoutView.LogoutViewSet)
 
 auth_urlpatterns = [
     url(r'v1/login/$', auth_view.AuthenticationView.AuthenticationViewSet.as_view()),
-    # url(r'v1/change-password/$', auth_view.ChangePassWordViewSet.as_view({'patch': 'partial_update'})),
+    url(r'v1/change-password/$', auth_view.ChangePassWordViewSet.as_view({'patch': 'partial_update'})),
 ]
 auth_urlpatterns += router_auth.urls
 
