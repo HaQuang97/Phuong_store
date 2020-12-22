@@ -26,6 +26,7 @@ from apps.authentication.versions.v1.serializers.request_serializer import Login
     ChangePasswordSerializer, CheckEmailSerializer, CheckOTPCodeSerializer, ForgotPasswordSerializer
 from apps.authentication.versions.v1.serializers.response_serializer import UserSerializer, UserResponseSerializer
 from apps.utils import send_email
+from apps.utils.error_code import ErrorCode
 from apps.utils.exception import CustomException
 from apps.utils.views_helper import GenericViewSet, EmptySerializer
 
@@ -79,6 +80,10 @@ class UserCreateView:
 
             # todo send email here
             # send_email()
+            # send activation email to user
+            mail_template = EmailTemplate()
+            mail_template.send_activation_email(instance)
+
             Token.objects.create(user=instance, token=time_token)
             token = JWTToken(instance, time_token, True).make_token(request, status=status.HTTP_201_CREATED)
             return token
@@ -177,7 +182,7 @@ class VerifyAccountView:
 
                 time_token = int(datetime.timestamp(datetime.utcnow()))
                 Token.objects.create(user=user, token=time_token)
-                return JWTToken(user, time_token).make_token(status=status.HTTP_200_OK)
+                return JWTToken(user, time_token).make_token(user, status=status.HTTP_200_OK)
 
         @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated], url_path='profile')
         def profile(self, request, *args, **kwargs):

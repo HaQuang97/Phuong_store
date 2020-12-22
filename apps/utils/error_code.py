@@ -72,3 +72,11 @@ class ErrorCode:
         Error.code: 15,
         Error.message: 'Bạn không phải là sub_admin'
     }
+    otp_code_has_expired = {
+        Error.code: 16,
+        Error.message: 'OTP code has expired'
+    }
+    wrong_data = {
+        Error.code: 17,
+        Error.message: 'Wrong Data'
+    }

@@ -16,5 +16,6 @@ auth_urlpatterns += router_auth.urls
 
 router_account = DefaultRouter()
 router_account.register(r'v1', account_view.AccountView.AccountViewSet)
+router_account.register(r'v1/verify-account', auth_view.VerifyAccountView.VerifyAccountViewSet)
 account_urlpatterns = router_account.urls
 

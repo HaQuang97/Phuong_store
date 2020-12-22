@@ -1,6 +1,7 @@
 import random
 import re
-from datetime import datetime, date, timezone
+from datetime import datetime, date
+from django.utils import timezone
 
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
@@ -8,7 +9,7 @@ from django.contrib.auth import authenticate
 from rest_framework import serializers
 
 from apps.authentication.models import User, UserAuth
-from apps.utils.config import PasswordRegex
+from apps.utils.config import PasswordRegex, OTPCode
 from apps.utils.error_code import ErrorCode
 from apps.utils.exception import CustomException
 from apps.utils.constants import AuthType
@@ -69,7 +70,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             address=validated_data.get('address'),
             gender=validated_data.get('gender'),
             birthday=validated_data.get('birthday'),
-            is_active=True
+            # is_active=
         )
         user.set_password(validated_data.get('password'))
         user.save()

@@ -35,7 +35,7 @@ class CreditCard(models.Model):
 
 class Contact(models.Model):
     full_name = models.CharField(max_length=255)
-    email = models.EmailField(blank=True, unique=True, max_length=70, null=True)
+    email = models.EmailField(blank=True, max_length=70, null=True)
     body = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
