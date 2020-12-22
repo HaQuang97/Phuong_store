@@ -217,9 +217,7 @@ class CmsAdminView:
                     description=serializer.validated_data['description'],
                     address=serializer.validated_data['address']
                 )
-            return super().custom_response({
-                "test": "kkfda m"
-            })
+            return super().custom_response({})
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
                 url_path='supplier_detail')

@@ -35,3 +35,8 @@ class OrderStatusType(Enum):
 class PAYMENTSTATUSTYPE(Enum):
     SUCCESS = 1
     FAILURE = 2
+
+
+class AuthType(Enum):
+    ACTIVATION = 1
+    FORGOT_PASSWORD = 2

@@ -31,6 +31,10 @@ CHOICE_STATUS = (
     (UserStatus.ACTIVE.value, "Activated"),
     (UserStatus.POLICY_VIOLATION.value, "Policy violation"),
 )
+CHOICE_AUTH_TYPE = (
+    (AuthType.ACTIVATION.value, "Activation"),
+    (AuthType.FORGOT_PASSWORD.value, "Forgot password"),
+)
 
 
 class User(AbstractBaseUser):
@@ -91,3 +95,16 @@ class Token(models.Model):
 
     def __str__(self):
         return "{} - {} - {}".format(self.id, self.user_id, self.token)
+
+
+class UserAuth(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    auth_code = models.CharField(max_length=6, unique=True)
+    auth_type = models.IntegerField(choices=CHOICE_AUTH_TYPE, default=AuthType.ACTIVATION.value)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'user_auth'
+
+    def __str__(self):
+        return '{}-{}'.format(self.id, self.auth_code)

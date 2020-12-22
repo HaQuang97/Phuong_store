@@ -13,3 +13,13 @@ class Region:
 
 class PasswordRegex:
     password_regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*?]{8,50}$"
+
+
+class OTPCode:
+    otp_string = "0123456789"
+    timeout_auth_code = 15
+
+
+class MailSubject:
+    activation = 'ACTIVE'
+    forgot_password = 'FORGOTPASSWORD'

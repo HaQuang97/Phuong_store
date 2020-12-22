@@ -1,9 +1,9 @@
 from rest_framework.routers import DefaultRouter
 
-from apps.cms_admin.versions.v1.views import cms_admin_view
+from apps.customer.versions.v1.views import customer_view
 
 #
 router = DefaultRouter()
-router.register(r'v1', cms_admin_view.CmsAdminView.CmsAdminViewViewSet)
+router.register(r'v1', customer_view.CustomerView.CustomerViewViewSet)
 urlpatterns = router.urls
-cms_admin_urlpatterns_v1 = urlpatterns
+customer_urlpatterns_v1 = urlpatterns

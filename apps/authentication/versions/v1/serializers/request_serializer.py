@@ -1,16 +1,17 @@
 import random
 import re
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 
-from apps.authentication.models import User
+from apps.authentication.models import User, UserAuth
 from apps.utils.config import PasswordRegex
 from apps.utils.error_code import ErrorCode
 from apps.utils.exception import CustomException
-
+from apps.utils.constants import AuthType
 
 class UserSerisalizer(serializers.ModelSerializer):
     class Meta:
@@ -67,7 +68,8 @@ class UserCreateSerializer(serializers.ModelSerializer):
             phone=validated_data.get('phone'),
             address=validated_data.get('address'),
             gender=validated_data.get('gender'),
-            birthday=validated_data.get('birthday')
+            birthday=validated_data.get('birthday'),
+            is_active=True
         )
         user.set_password(validated_data.get('password'))
         user.save()
@@ -127,3 +129,49 @@ class LoginSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class CheckEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True, max_length=255)
+
+    def validate(self, attrs):
+        if User.objects.filter(email=attrs['email']).exists():
+            return {'exist': True}
+        return {'exist': False}
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
+
+
+class CheckOTPCodeSerializer(serializers.Serializer):
+    user = serializers.IntegerField(required=True)
+    otp_code = serializers.CharField(max_length=6, required=True)
+
+    def validate(self, attrs):
+        try:
+            user_code = UserAuth.objects.filter(
+                user_id=attrs['user'],
+                auth_code=attrs['otp_code'],
+                auth_type=AuthType.ACTIVATION.value
+            ).get()
+            # check time code
+            if not user_code.created_at >= timezone.now() - relativedelta(minutes=OTPCode.timeout_auth_code):
+                raise CustomException(ErrorCode.otp_code_has_expired)
+            return user_code.user
+        except UserAuth.DoesNotExist:
+            raise CustomException(ErrorCode.wrong_data)
+
+    def save(self, **kwargs):
+        user = self.validated_data
+        user.is_active = True
+        user.save()
+        # delete otp code
+        UserAuth.objects.filter(user=user, auth_type=AuthType.ACTIVATION.value).delete()
+        return user
+
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=255, required=True)

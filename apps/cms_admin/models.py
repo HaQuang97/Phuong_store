@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import JSONField
 
 from apps.authentication.models import User
-from apps.utils.constants import ImageType, OrderStatusType
+from apps.utils.constants import ImageType, OrderStatusType, PAYMENTSTATUSTYPE
 
 IMAGE_TYPE = (
     (ImageType.IMAGE_TYPE_1.value, "ImageType1"),
@@ -128,5 +128,3 @@ class OrderDetails(models.Model):
 
     def __str__(self):
         return '{}'.format(self.id)
-
-
