@@ -14,6 +14,7 @@ from apps.utils.error_code import ErrorCode
 from apps.utils.exception import CustomException
 from apps.utils.constants import AuthType
 
+
 class UserSerisalizer(serializers.ModelSerializer):
     class Meta:
         model = User

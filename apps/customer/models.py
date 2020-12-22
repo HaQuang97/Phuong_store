@@ -46,3 +46,33 @@ class Contact(models.Model):
 
     def __str__(self):
         return '{}'.format(self.id)
+
+
+class Subscribers(models.Model):
+    email = models.EmailField(blank=True, max_length=70, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'subscribers'
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+
+class Blogs(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=1200)
+    author = models.CharField(max_length=255)
+    image = models.CharField(max_length=255)
+    like = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'blogs'
+
+    def __str__(self):
+        return '{}'.format(self.id)
