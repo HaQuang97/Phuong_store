@@ -10,6 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
 from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails, Supplier, Comments
+from apps.customer.models import Contact, Subscribers, Blogs
 from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCategoryRequestSerializer, \
     UpdateCategoryRequestSerializer, DeleteCategoryRequestSerializer, AddNewItemRequestSerializer, \
     UpdateItemRequestSerializer, DeleteItemRequestSerializer, UploadImageItemRequestSerializer, \
@@ -397,12 +398,16 @@ class CmsAdminView:
             count_orders = Orders.objects.count()
             count_supplier = Supplier.objects.count()
             count_comments = Comments.objects.count()
+            count_subscriber = Subscribers.objects.count()
+            count_contact = Contact.objects.count()
             response = {
                 'category': count_category,
                 'items': count_items,
                 'orders': count_orders,
                 'supplier': count_supplier,
                 'comments': count_comments,
+                'subscriber': count_subscriber,
+                'contact': count_contact,
             }
             return super().custom_response(response)
 
