@@ -400,25 +400,46 @@ class CmsAdminView:
             count_comments = Comments.objects.count()
             count_subscriber = Subscribers.objects.count()
             count_contact = Contact.objects.count()
-            response = {
-                'category': count_category,
-                'items': count_items,
-                'orders': count_orders,
-                'supplier': count_supplier,
-                'comments': count_comments,
-                'subscriber': count_subscriber,
-                'contact': count_contact,
-            }
+            response = [
+                {
+                    'name': 'category',
+                    'value': count_category
+                },
+                {
+                    'name': 'items',
+                    'value': count_items
+                },
+                {
+                    'name': 'orders',
+                    'value': count_orders
+                },
+                {
+                    'name': 'supplier',
+                    'value': count_supplier
+                },
+                {
+                    'name': 'comments',
+                    'value': count_comments
+                },
+                {
+                    'name': 'subscriber',
+                    'value': count_subscriber
+                },
+                {
+                    'name': 'contact',
+                    'value': count_contact
+                }
+            ]
             return super().custom_response(response)
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
                 url_path='list-comment')
         def list_comment(self, request, *args, **kwargs):
             query = Comments.objects.all().order_by('-updated_at')
-            data = ListCategoryResponseSerializer(query, many=True).data
+            data = ListCommentResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
                 url_path='add-new-comment')
         def add_new_comment(self, request, *args, **kwargs):
             serializer = AddNewCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
@@ -431,12 +452,12 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
                 url_path='update-comment')
         def update_comment(self, request, *args, **kwargs):
             serializer = UpdateCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
             if serializer.is_valid(raise_exception=True):
-                data = Comments.objects.filter(id=serializer.validated_data['category_id'])
+                data = Comments.objects.filter(id=serializer.validated_data['comment_id'])
                 data.update(
                     comment=serializer.validated_data['comment'],
                     item_id=serializer.validated_data['item_id'],
@@ -445,7 +466,7 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+        @action(detail=False, permission_classes=[IsAuthenticated, IsAdminOrSubAdmin], methods=['post'],
                 url_path='delete-comment')
         def delete_comment(self, request, *args, **kwargs):
             serializer = DeleteCommentRequestSerializer(data=request.data, context=self.get_serializer_context())

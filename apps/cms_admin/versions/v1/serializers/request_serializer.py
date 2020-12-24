@@ -175,6 +175,7 @@ class AddNewCommentRequestSerializer(serializers.Serializer):
 
 
 class UpdateCommentRequestSerializer(serializers.Serializer):
+    comment_id = serializers.IntegerField(required=True)
     comment = serializers.CharField(max_length=255, required=True)
     item_id = serializers.IntegerField()
     user_id = serializers.IntegerField()

@@ -9,11 +9,13 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
-from apps.customer.models import Contact, CreditCard, Blogs, Subscribers
+from apps.cms_admin.models import Items
+from apps.customer.models import Contact, CreditCard, Blogs, Subscribers, Carts, CartItems
 from apps.customer.versions.v1.serializers.request_serializer import AddNewContactRequestSerializer, \
     DeleteBlogsRequestSerializer, DeleteSubscriberRequestSerializer, AddBlogsRequestSerializer, \
     AddSubscriberRequestSerializer, AddCreditCardRequestSerializer, DeleteCreditCardRequestSerializer, \
-    DeleteContactRequestSerializer, UpdateBlogsRequestSerializer
+    DeleteContactRequestSerializer, UpdateBlogsRequestSerializer, AddToCartRequestSerializer, \
+    DeleteItemFromCartRequestSerializer
 
 from apps.customer.versions.v1.serializers.response_serializer import ListContactResponseSerializer, \
     ListUserResponseSerializer, ListBlogsResponseSerializer, ListSubscriberResponseSerializer, \
@@ -47,6 +49,7 @@ class CustomerView:
     @method_decorator(name='partial_update', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='destroy', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name="get_blog_detail", decorator=swagger_auto_schema(manual_parameters=[blog_id]))
+    @method_decorator(name='list_item_from_cart', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     class CustomerViewViewSet(GenericViewSet):
         queryset = User.objects.all()
         action_serializers = {
@@ -59,11 +62,12 @@ class CustomerView:
             "add_new_credit_card_request": AddCreditCardRequestSerializer,
             "add_new_blog_request": AddBlogsRequestSerializer,
             "add_new_subscriber_request": AddSubscriberRequestSerializer,
-            "update_blog_request": UpdateBlogsRequestSerializer,
+            "add_to_cart_request": AddToCartRequestSerializer,
             "delete_contact_request": DeleteContactRequestSerializer,
             "delete_credit_card_request": DeleteCreditCardRequestSerializer,
             "delete_blog_request": DeleteBlogsRequestSerializer,
             "delete_subscriber_request": DeleteSubscriberRequestSerializer,
+            "delete_item_from_cart_request": DeleteItemFromCartRequestSerializer
 
         }
 
@@ -151,6 +155,13 @@ class CustomerView:
                 )
             return super().custom_response({"OK"})
 
+        @action(detail=False, methods=['get'], permission_classes=[IsAdminOrSubAdmin],
+                url_path='list-subscriber')
+        def list_subscriber(self, request, *args, **kwargs):
+            query = Subscribers.objects.all()
+            data = ListSubscriberResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
                 url_path='delete-subscriber')
         def delete_subscriber(self, request, *args, **kwargs):
@@ -184,6 +195,13 @@ class CustomerView:
                 )
             return super().custom_response({"OK"})
 
+        @action(detail=False, methods=['get'], permission_classes=[IsAdminOrSubAdmin],
+                url_path='list-blog')
+        def list_blog(self, request, *args, **kwargs):
+            query = Blogs.objects.all()
+            data = ListBlogsResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
                 url_path='update_blog')
         def update_blog(self, request, *args, **kwargs):
@@ -209,3 +227,65 @@ class CustomerView:
                 for item in queryset:
                     item.delete()
             return super().custom_response({"Success"})
+
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
+                url_path='add-to-cart')
+        def add_to_cart(self, request, *args, **kwargs):
+            serializer = AddToCartRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                check_cart_item = CartItems.objects.filter(item_id=serializer.data['item_id'],
+                                                           cart__user_id=request.user.id)
+                if check_cart_item.exists():
+                    check_cart_item.update(quantity=serializer.data['quantity'] + check_cart_item[0].quantity)
+                else:
+                    cart = Carts.objects.create(user_id=request.user.id)
+                    CartItems.objects.create(
+                        item_id=serializer.data['item_id'],
+                        quantity=serializer.data['quantity'],
+                        cart_id=cart.id
+                    )
+            return super().custom_response({"Success!"})
+
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['get'],
+                url_path='list-item-from-cart')
+        def list_item_from_cart(self, request, *args, **kwargs):
+            user_id = int(request.query_params['user_id'])
+            response = []
+            cart_id = []
+            cart_data = Carts.objects.filter(user_id=user_id)
+            for item in cart_data:
+                cart_id.append(item.id)
+            filter_data = CartItems.objects.filter(cart_id__in=cart_id)
+            for data in filter_data:
+                res = {
+                    "id": data.id,
+                    "name": data.item.name,
+                    "description": data.item.description,
+                    "short_description": data.item.short_description,
+                    "image_url": data.item.image,
+                    "quantity": data.quantity,
+                    "price": data.item.price,
+                    "total_price": data.quantity * data.item.price
+                }
+                response.append(res)
+            return super().custom_response(response)
+
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
+                url_path='delete-item-from-cart')
+        def delete_item_from_cart(self, request, *args, **kwargs):
+            serializer = DeleteItemFromCartRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                item_id_list = serializer.data['item_id_list']
+                queryset = CartItems.objects.filter(item_id__in=item_id_list)
+                for item in queryset:
+                    item.delete()
+            return super().custom_response({"Delete success !"})
+
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
+                url_path='edit-item-from-cart')
+        def edit_item_from_cart(self, request, *args, **kwargs):
+            serializer = AddToCartRequestSerializer(data=request.data, context=self.get_serializer_context())
+            if serializer.is_valid(raise_exception=True):
+                cart_item = CartItems.objects.filter(item_id=serializer.data['item_id'])
+                cart_item.update(quantity=serializer.data['quantity'])
+            return super().custom_response({"Update Success !"})

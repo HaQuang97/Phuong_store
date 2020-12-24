@@ -103,3 +103,24 @@ class DeleteSubscriberRequestSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+class AddToCartRequestSerializer(serializers.Serializer):
+    item_id = serializers.IntegerField(required=True)
+    quantity = serializers.IntegerField(default=1)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
+
+class DeleteItemFromCartRequestSerializer(serializers.Serializer):
+    item_id_list = serializers.ListField(child=serializers.IntegerField(min_value=0, required=True), required=True)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass

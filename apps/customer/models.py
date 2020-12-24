@@ -76,3 +76,31 @@ class Blogs(models.Model):
 
     def __str__(self):
         return '{}'.format(self.id)
+
+
+class Carts(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'carts'
+
+    def __str__(self):
+        return '{}'.format(self.id)
+
+
+class CartItems(models.Model):
+    item = models.ForeignKey(Items, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    cart = models.ForeignKey(Carts, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(default=None, null=True, blank=True)
+
+    class Meta:
+        db_table = 'cart_items'
+
+    def __str__(self):
+        return '{}'.format(self.id)
