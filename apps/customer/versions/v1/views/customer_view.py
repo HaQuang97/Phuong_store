@@ -120,6 +120,13 @@ class CustomerView:
                     item.delete()
             return super().custom_response({})
 
+        @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated],
+                url_path='list-credit-card')
+        def list_credit_card(self, request, *args, **kwargs):
+            query = CreditCard.objects.all()
+            data = ListCreditCardResponseSerializer(query, many=True).data
+            return super().custom_response(data)
+
         @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
                 url_path='add_new_credit_card')
         def add_new_credit_card(self, request, *args, **kwargs):
@@ -134,7 +141,7 @@ class CustomerView:
                 )
             return super().custom_response({"OK"})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+        @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
                 url_path='delete-credit-card')
         def delete_credit_card(self, request, *args, **kwargs):
             serializer = DeleteCreditCardRequestSerializer(data=request.data, context=self.get_serializer_context())
