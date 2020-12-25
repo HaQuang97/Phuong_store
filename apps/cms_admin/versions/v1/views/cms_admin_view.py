@@ -335,9 +335,9 @@ class CmsAdminView:
             if serializer.is_valid(raise_exception=True):
                 item_filter = Items.objects.filter(id=serializer.data['item_id']).get()
                 instance = Orders.objects.create(
-                    name=request.user.full_name,
-                    phone=request.user.phone,
-                    address=request.user.address,
+                    name=serializer.data['user_name'],
+                    phone=serializer.data['phone'],
+                    address=serializer.data['address'],
                     user_id=request.user.id,
                 )
                 order_detail = OrderDetails.objects.create(

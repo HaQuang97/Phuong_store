@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import JSONField
 
 from apps.authentication.models import User
-from apps.utils.constants import ImageType, OrderStatusType, PAYMENTSTATUSTYPE
+from apps.utils.constants import ImageType, OrderStatusType, PaymentStatusType
 
 IMAGE_TYPE = (
     (ImageType.IMAGE_TYPE_1.value, "ImageType1"),
@@ -18,6 +18,11 @@ ORDER_STATUS_TYPE = (
     (OrderStatusType.DELIVERING.value, "Delivering"),
     (OrderStatusType.COMPLETED.value, "Done"),
     (OrderStatusType.REFUND.value, "Refund"),
+)
+
+PAYMENT_STATUS_TYPE = (
+    (PaymentStatusType.SUCCESS.value, "Success"),
+    (PaymentStatusType.FAILURE.value, "Failure")
 )
 
 
@@ -102,6 +107,7 @@ class Orders(models.Model):
     address = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)
+    # payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)

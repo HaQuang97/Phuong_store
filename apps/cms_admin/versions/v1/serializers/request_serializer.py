@@ -142,6 +142,9 @@ class DeleteItemRequestSerializer(serializers.Serializer):
 class AddNewOrderRequestSerializer(serializers.Serializer):
     item_id = serializers.IntegerField()
     quantity = serializers.IntegerField(default=0)
+    user_name = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=255)
+    phone = serializers.IntegerField()
 
     def update(self, instance, validated_data):
         pass

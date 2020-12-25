@@ -25,14 +25,14 @@ class ImageType(Enum):
 
 class OrderStatusType(Enum):
     INIT = 0
-    PAYMENT_SUCCESS = 2
+    PAYMENT_SUCCESS = 1
     PAYMENT_FAIL = 2
     DELIVERING = 3
     COMPLETED = 4
     REFUND = 5
 
 
-class PAYMENTSTATUSTYPE(Enum):
+class PaymentStatusType(Enum):
     SUCCESS = 1
     FAILURE = 2
 
