@@ -1,7 +1,4 @@
-# from jsonfield import JSONField
 from django.db import models
-from django.db.models import JSONField
-
 from apps.authentication.models import User
 from apps.cms_admin.models import Items
 from apps.utils.constants import OrderStatusType
@@ -22,6 +19,7 @@ class CreditCard(models.Model):
     expire_date = models.DateField()
     CVV = models.IntegerField()
     address = models.CharField(max_length=1024)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)

@@ -1,15 +1,12 @@
 import json
 
-from django.db.models.query import Prefetch
 from django.utils.decorators import method_decorator
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
-from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
-from apps.cms_admin.models import Items
 from apps.customer.models import Contact, CreditCard, Blogs, Subscribers, Carts, CartItems
 from apps.customer.versions.v1.serializers.request_serializer import AddNewContactRequestSerializer, \
     DeleteBlogsRequestSerializer, DeleteSubscriberRequestSerializer, AddBlogsRequestSerializer, \
@@ -20,7 +17,6 @@ from apps.customer.versions.v1.serializers.request_serializer import AddNewConta
 from apps.customer.versions.v1.serializers.response_serializer import ListContactResponseSerializer, \
     ListUserResponseSerializer, ListBlogsResponseSerializer, ListSubscriberResponseSerializer, \
     ListCreditCardResponseSerializer
-from apps.utils.error_code import ErrorCode
 from apps.utils.permission import IsAdminOrSubAdmin
 from apps.utils.views_helper import GenericViewSet
 
@@ -137,7 +133,9 @@ class CustomerView:
                     number_credit=serializer.validated_data['number_credit'],
                     expire_date=serializer.validated_data['expire_date'],
                     CVV=serializer.validated_data['CVV'],
-                    address=serializer.validated_data['address']
+                    address=serializer.validated_data['address'],
+                    user_id=serializer.validated_data['user_id'],
+
                 )
             return super().custom_response({"OK"})
 

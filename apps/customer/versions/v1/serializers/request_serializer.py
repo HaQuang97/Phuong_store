@@ -29,6 +29,7 @@ class AddCreditCardRequestSerializer(serializers.Serializer):
     expire_date = serializers.DateField()
     CVV = serializers.IntegerField(required=True)
     address = serializers.CharField(max_length=255)
+    user_id = serializers.IntegerField(required=True)
 
     def update(self, instance, validated_data):
         pass

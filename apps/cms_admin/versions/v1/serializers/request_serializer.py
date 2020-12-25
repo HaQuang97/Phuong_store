@@ -92,6 +92,7 @@ class AddNewItemRequestSerializer(serializers.Serializer):
     short_description = serializers.CharField(max_length=10000, required=False)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
+    sale = serializers.IntegerField(default=0)
 
     def update(self, instance, validated_data):
         pass
@@ -111,6 +112,7 @@ class UpdateItemRequestSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(required=True)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
+    sale = serializers.IntegerField(default=0)
 
     def update(self, instance, validated_data):
         pass

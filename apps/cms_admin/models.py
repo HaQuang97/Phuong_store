@@ -72,6 +72,7 @@ class Items(models.Model):
     image = JSONField(null=True, blank=True)
     quantity = models.IntegerField(default=0)
     price_temp = models.IntegerField(default=None)
+    sale = models.IntegerField(default=0)
     price = models.IntegerField(default=None)
     view_item = models.IntegerField(default=None)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -128,7 +128,7 @@ class CmsAdminView:
                 }
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-category')
         def list_category(self, request, *args, **kwargs):
             query = Category.objects.all().order_by('-updated_at')
@@ -169,14 +169,14 @@ class CmsAdminView:
                     item.delete()
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-item')
         def list_items(self, request, *args, **kwargs):
             query = Items.objects.all().order_by('-updated_at')
             data = ListItemResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-item-by-category_id')
         def list_items_by_category(self, request, *args, **kwargs):
             category_id = int(request.query_params['category_id'])
@@ -201,7 +201,7 @@ class CmsAdminView:
                 })
             return super().custom_response(response)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-supplier')
         def list_supplier(self, request, *args, **kwargs):
             query = Supplier.objects.all().order_by('-updated_at')
@@ -267,6 +267,7 @@ class CmsAdminView:
                     quantity=serializer.validated_data['quantity'],
                     price_temp=serializer.validated_data['price_temp'],
                     price=serializer.validated_data['price'],
+                    sale=serializer.validated_data['sale'],
                     view_item=0
                 )
             return super().custom_response({})
@@ -298,6 +299,7 @@ class CmsAdminView:
                     image=json.dumps(serializer.validated_data['image']),
                     price_temp=serializer.validated_data['price_temp'],
                     price=serializer.validated_data['price'],
+                    sale=serializer.validated_data['sale'],
                     view_item=0
                 )
             return super().custom_response({})
