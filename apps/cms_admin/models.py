@@ -27,8 +27,8 @@ PAYMENT_STATUS_TYPE = (
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255, default=None)
-    description = models.CharField(max_length=255, default=None)
+    name = models.CharField(max_length=1024, default=None)
+    description = models.CharField(max_length=10000, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
@@ -49,9 +49,9 @@ class ItemImages(models.Model):
 
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
+    name = models.CharField(max_length=1024)
+    description = models.CharField(max_length=10000)
+    address = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
@@ -64,9 +64,9 @@ class Supplier(models.Model):
 
 
 class Items(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    short_description = models.CharField(max_length=255)
+    name = models.CharField(max_length=1024)
+    description = models.CharField(max_length=10000)
+    short_description = models.CharField(max_length=10000)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     image = JSONField(null=True, blank=True)
@@ -86,7 +86,7 @@ class Items(models.Model):
 
 
 class Comments(models.Model):
-    comment = models.CharField(max_length=255)
+    comment = models.CharField(max_length=10000)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
@@ -104,7 +104,7 @@ class Comments(models.Model):
 class Orders(models.Model):
     name = models.CharField(max_length=255)
     phone = models.IntegerField(default=None)
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=1024)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)
     # payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE, default=1)

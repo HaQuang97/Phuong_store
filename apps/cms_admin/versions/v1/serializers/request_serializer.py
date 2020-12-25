@@ -4,8 +4,8 @@ from apps.cms_admin.models import IMAGE_TYPE
 
 
 class AddNewCategoryRequestSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255, required=True)
-    description = serializers.CharField(max_length=255, required=True)
+    name = serializers.CharField(max_length=1024, required=True)
+    description = serializers.CharField(max_length=10000, required=True)
 
     def update(self, instance, validated_data):
         pass
@@ -16,8 +16,8 @@ class AddNewCategoryRequestSerializer(serializers.Serializer):
 
 class UpdateCategoryRequestSerializer(serializers.Serializer):
     category_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(max_length=255, required=False)
-    description = serializers.CharField(max_length=255, required=False)
+    name = serializers.CharField(max_length=1024, required=False)
+    description = serializers.CharField(max_length=10000, required=False)
 
     def update(self, instance, validated_data):
         pass
@@ -48,9 +48,9 @@ class UploadImageItemRequestSerializer(serializers.Serializer):
 
 
 class AddNewSupplierRequestSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255, required=True)
-    description = serializers.CharField(max_length=255, required=False)
-    address = serializers.CharField(max_length=255, required=False)
+    name = serializers.CharField(max_length=1024, required=True)
+    description = serializers.CharField(max_length=10000, required=False)
+    address = serializers.CharField(max_length=1024, required=False)
 
     def update(self, instance, validated_data):
         pass
@@ -61,9 +61,9 @@ class AddNewSupplierRequestSerializer(serializers.Serializer):
 
 class UpdateSupplierRequestSerializer(serializers.Serializer):
     supplier_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(max_length=255, required=False)
-    description = serializers.CharField(max_length=255, required=False)
-    address = serializers.CharField(max_length=255, required=False)
+    name = serializers.CharField(max_length=1024, required=False)
+    description = serializers.CharField(max_length=10000, required=False)
+    address = serializers.CharField(max_length=1024, required=False)
 
     def update(self, instance, validated_data):
         pass
@@ -85,11 +85,11 @@ class DeleteSupplierRequestSerializer(serializers.Serializer):
 class AddNewItemRequestSerializer(serializers.Serializer):
     category_id = serializers.IntegerField(required=True)
     supplier_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(max_length=255)
+    name = serializers.CharField(max_length=1024)
     quantity = serializers.IntegerField(required=True)
-    description = serializers.CharField(max_length=255)
+    description = serializers.CharField(max_length=10000)
     image = serializers.JSONField(required=False)
-    short_description = serializers.CharField(max_length=255, required=False)
+    short_description = serializers.CharField(max_length=10000, required=False)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
 
@@ -104,9 +104,9 @@ class UpdateItemRequestSerializer(serializers.Serializer):
     item_id = serializers.IntegerField(required=True)
     category_id = serializers.IntegerField(required=True)
     supplier_id = serializers.IntegerField(required=True)
-    name = serializers.CharField(max_length=255)
-    description = serializers.CharField(max_length=255)
-    short_description = serializers.CharField(max_length=255, required=False)
+    name = serializers.CharField(max_length=1024)
+    description = serializers.CharField(max_length=10000)
+    short_description = serializers.CharField(max_length=10000, required=False)
     image = serializers.JSONField(required=False)
     quantity = serializers.IntegerField(required=True)
     price_temp = serializers.IntegerField(default=0)
@@ -143,7 +143,7 @@ class AddNewOrderRequestSerializer(serializers.Serializer):
     item_id = serializers.IntegerField()
     quantity = serializers.IntegerField(default=0)
     user_name = serializers.CharField(max_length=255)
-    address = serializers.CharField(max_length=255)
+    address = serializers.CharField(max_length=1024)
     phone = serializers.IntegerField()
 
     def update(self, instance, validated_data):
@@ -165,7 +165,7 @@ class UpdateOrderRequestSerializer(serializers.Serializer):
 
 
 class AddNewCommentRequestSerializer(serializers.Serializer):
-    comment = serializers.CharField(max_length=255, required=True)
+    comment = serializers.CharField(max_length=10000, required=True)
     item_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
     rating = serializers.IntegerField()
@@ -179,7 +179,7 @@ class AddNewCommentRequestSerializer(serializers.Serializer):
 
 class UpdateCommentRequestSerializer(serializers.Serializer):
     comment_id = serializers.IntegerField(required=True)
-    comment = serializers.CharField(max_length=255, required=True)
+    comment = serializers.CharField(max_length=10000, required=True)
     item_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
     rating = serializers.IntegerField()

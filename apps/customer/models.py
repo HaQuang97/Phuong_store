@@ -21,7 +21,7 @@ class CreditCard(models.Model):
     number_credit = models.CharField(max_length=20)
     expire_date = models.DateField()
     CVV = models.IntegerField()
-    address = models.CharField(max_length=255)
+    address = models.CharField(max_length=1024)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
@@ -36,7 +36,7 @@ class CreditCard(models.Model):
 class Contact(models.Model):
     full_name = models.CharField(max_length=255)
     email = models.EmailField(blank=True, max_length=70, null=True)
-    body = models.CharField(max_length=255)
+    body = models.CharField(max_length=10000)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
@@ -62,8 +62,8 @@ class Subscribers(models.Model):
 
 
 class Blogs(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.CharField(max_length=1200)
+    title = models.CharField(max_length=1024)
+    description = models.CharField(max_length=10000)
     author = models.CharField(max_length=255)
     image = models.CharField(max_length=255)
     like = models.IntegerField()

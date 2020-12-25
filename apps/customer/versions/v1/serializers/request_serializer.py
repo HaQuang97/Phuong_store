@@ -4,7 +4,7 @@ from rest_framework import serializers
 class AddNewContactRequestSerializer(serializers.Serializer):
     full_name = serializers.CharField(max_length=255)
     email = serializers.EmailField(max_length=70)
-    body = serializers.CharField(max_length=255)
+    body = serializers.CharField(max_length=10000)
 
     def update(self, instance, validated_data):
         pass
@@ -27,7 +27,7 @@ class AddCreditCardRequestSerializer(serializers.Serializer):
     full_name = serializers.CharField(max_length=255)
     number_credit = serializers.CharField(max_length=20)
     expire_date = serializers.DateField()
-    CVV = serializers.IntegerField()
+    CVV = serializers.IntegerField(required=True)
     address = serializers.CharField(max_length=255)
 
     def update(self, instance, validated_data):
@@ -48,8 +48,8 @@ class DeleteCreditCardRequestSerializer(serializers.Serializer):
 
 
 class AddBlogsRequestSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=255)
-    description = serializers.CharField(max_length=1200)
+    title = serializers.CharField(max_length=1024)
+    description = serializers.CharField(max_length=10000)
     author = serializers.CharField(max_length=255)
     image = serializers.CharField(max_length=255)
     like = serializers.IntegerField()
@@ -62,8 +62,8 @@ class AddBlogsRequestSerializer(serializers.Serializer):
 
 
 class UpdateBlogsRequestSerializer(serializers.Serializer):
-    title = serializers.CharField(max_length=255)
-    description = serializers.CharField(max_length=1200)
+    title = serializers.CharField(max_length=1024)
+    description = serializers.CharField(max_length=10000)
     author = serializers.CharField(max_length=255)
     image = serializers.CharField(max_length=255)
     like = serializers.IntegerField()
