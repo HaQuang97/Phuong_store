@@ -128,7 +128,7 @@ class CmsAdminView:
                 }
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='list-category')
         def list_category(self, request, *args, **kwargs):
             query = Category.objects.all().order_by('-updated_at')
@@ -169,14 +169,14 @@ class CmsAdminView:
                     item.delete()
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='list-item')
         def list_items(self, request, *args, **kwargs):
             query = Items.objects.all().order_by('-updated_at')
             data = ListItemResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='list-item-by-category_id')
         def list_items_by_category(self, request, *args, **kwargs):
             category_id = int(request.query_params['category_id'])
@@ -201,7 +201,7 @@ class CmsAdminView:
                 })
             return super().custom_response(response)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='list-supplier')
         def list_supplier(self, request, *args, **kwargs):
             query = Supplier.objects.all().order_by('-updated_at')
@@ -302,7 +302,7 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAuthenticated], methods=['get'],
+        @action(detail=False, permission_classes=[IsAuthenticated, IsAdminOrSubAdmin], methods=['get'],
                 url_path='get-detail-item')
         def get_detail_item(self, request, *args, **kwargs):
             item_id = int(request.query_params['item_id'])
@@ -360,7 +360,7 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='get-order-detail')
         def get_order_detail(self, request, *args, **kwargs):
             order_id = int(request.query_params['order_id'])
@@ -432,7 +432,7 @@ class CmsAdminView:
             ]
             return super().custom_response(response)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='list-comment')
         def list_comment(self, request, *args, **kwargs):
             query = Comments.objects.all().order_by('-updated_at')

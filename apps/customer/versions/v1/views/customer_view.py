@@ -180,7 +180,7 @@ class CustomerView:
                     item.delete()
             return super().custom_response({"OK"})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
                 url_path='get_blog_detail')
         def get_blog_detail(self, request, *args, **kwargs):
             blog_id = int(request.query_params['blog_id'])
@@ -202,7 +202,7 @@ class CustomerView:
                 )
             return super().custom_response({"OK"})
 
-        @action(detail=False, methods=['get'], permission_classes=[IsAdminOrSubAdmin],
+        @action(detail=False, methods=['get'], permission_classes=[IsAdminOrSubAdmin, IsAuthenticated],
                 url_path='list-blog')
         def list_blog(self, request, *args, **kwargs):
             query = Blogs.objects.all()
