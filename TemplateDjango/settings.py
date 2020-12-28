@@ -136,6 +136,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'apps.authentication.utils.custom_auth.CustomAuthentication',
     ),
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'EXCEPTION_HANDLER': 'apps.utils.exception_handler.custom_exception_handler',
     'DEFAULT_RENDERER_CLASSES': (
@@ -152,7 +155,7 @@ DATABASES = {
         'HOST': env_config('DATABASE_HOST'),
         'PORT': env_config('DATABASE_PORT'),
     }
-    
+
 }
 
 SWAGGER_SETTINGS = {
@@ -162,7 +165,7 @@ SWAGGER_SETTINGS = {
     'REFETCH_SCHEMA_WITH_AUTH': True,
     'REFETCH_SCHEMA_ON_LOGOUT': True,
     'DEFAULT_INFO': 'SpaceShare.urls.swagger.swagger_info',
-    
+
     'SECURITY_DEFINITIONS': {
         'JWT': {
             'type': 'apiKey',
@@ -171,7 +174,7 @@ SWAGGER_SETTINGS = {
         }
     },
     'DOC_EXPANSION': 'none',
-    
+
 }
 
 AUTH_USER_MODEL = 'authentication.User'
@@ -246,8 +249,8 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-EMAIL_HOST=env_config('EMAIL_HOST')
-EMAIL_PORT=env_config('EMAIL_PORT')
-EMAIL_HOST_USER=env_config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD=env_config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS=env_config('EMAIL_USE_TLS')
+EMAIL_HOST = env_config('EMAIL_HOST')
+EMAIL_PORT = env_config('EMAIL_PORT')
+EMAIL_HOST_USER = env_config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env_config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env_config('EMAIL_USE_TLS')

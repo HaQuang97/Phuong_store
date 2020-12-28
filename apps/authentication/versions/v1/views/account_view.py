@@ -54,7 +54,7 @@ class AccountView:
             general_response = rsp.Response(serializer.data).generate_response()
             return Response(general_response, status=status.HTTP_200_OK)
         
-        @action(detail=False, methods=['patch'], parser_classes=[MultiPartParser], url_path='update-profile')
+        @action(detail=False, methods=['patch'], url_path='update-profile')
         def update_profile(self, request, *args, **kwargs):
             kwargs['partial'] = True
             return super().update(request, custom_instance=request.user, *args, **kwargs)

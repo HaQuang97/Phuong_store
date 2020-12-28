@@ -63,6 +63,7 @@ class AddBlogsRequestSerializer(serializers.Serializer):
 
 
 class UpdateBlogsRequestSerializer(serializers.Serializer):
+    blog_id = serializers.IntegerField(required=True)
     title = serializers.CharField(max_length=1024)
     description = serializers.CharField(max_length=10000)
     author = serializers.CharField(max_length=255)

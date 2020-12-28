@@ -70,6 +70,8 @@ class Items(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     image = JSONField(null=True, blank=True)
+    image2 = JSONField(null=True, blank=True)
+    image3 = JSONField(null=True, blank=True)
     quantity = models.IntegerField(default=0)
     price_temp = models.IntegerField(default=None)
     sale = models.IntegerField(default=0)
@@ -87,9 +89,11 @@ class Items(models.Model):
 
 
 class Comments(models.Model):
+    header = models.CharField(max_length=10000)
     comment = models.CharField(max_length=10000)
     item = models.ForeignKey(Items, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.CharField(max_length=255)
     rating = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -104,7 +108,7 @@ class Comments(models.Model):
 
 class Orders(models.Model):
     name = models.CharField(max_length=255)
-    phone = models.IntegerField(default=None)
+    phone = models.CharField(max_length=255)
     address = models.CharField(max_length=1024)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)

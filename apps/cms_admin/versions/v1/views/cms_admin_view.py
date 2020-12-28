@@ -57,6 +57,7 @@ class CmsAdminView:
     @method_decorator(name='change_role_account', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
     @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
+    @method_decorator(name="list_comments_by_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     @method_decorator(name="get_detail_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     @method_decorator(name="update_quantity", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     @method_decorator(name="supplier_detail", decorator=swagger_auto_schema(manual_parameters=[supplier_id]))
@@ -335,20 +336,23 @@ class CmsAdminView:
         def add_new_order(self, request, *args, **kwargs):
             serializer = AddNewOrderRequestSerializer(data=request.data, context=self.get_serializer_context())
             if serializer.is_valid(raise_exception=True):
-                item_filter = Items.objects.filter(id=serializer.data['item_id']).get()
+                # item_filter = Items.objects.filter(id=serializer.data['item_id']).get()
+                item_id_list = serializer.data['item_id']
+                queryset = Items.objects.filter(id__in=item_id_list)
                 instance = Orders.objects.create(
                     name=serializer.data['user_name'],
                     phone=serializer.data['phone'],
                     address=serializer.data['address'],
                     user_id=request.user.id,
                 )
-                order_detail = OrderDetails.objects.create(
-                    quantity=serializer.data['quantity'],
-                    unit_price=item_filter.price,
-                    total_price=serializer.data['quantity'] * item_filter.price,
-                    item_id=item_filter.id,
-                    order=instance
-                )
+                for item in queryset:
+                    order_detail = OrderDetails.objects.create(
+                        quantity=serializer.data['quantity'],
+                        unit_price=item.price,
+                        total_price=serializer.data['quantity'] * item.price,
+                        item_id=item.id,
+                        order=instance
+                    )
             return super().custom_response({})
 
         @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
@@ -433,6 +437,14 @@ class CmsAdminView:
                 }
             ]
             return super().custom_response(response)
+
+        @action(detail=False, methods=['get'],
+                url_path='list_comments_by_item_id')
+        def list_comments_by_item(self, request, *args, **kwargs):
+            item_id = int(request.query_params['item_id'])
+            query = Comments.objects.filter(item_id=item_id).order_by('-updated_at')
+            data = ListCommentResponseSerializer(query, many=True).data
+            return super().custom_response(data)
 
         @action(detail=False, methods=['get'],
                 url_path='list-comment')

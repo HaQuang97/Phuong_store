@@ -65,6 +65,8 @@ class CustomerView:
             "add_new_blog_request": AddBlogsRequestSerializer,
             "add_new_subscriber_request": AddSubscriberRequestSerializer,
             "add_to_cart_request": AddToCartRequestSerializer,
+            "update_blog_request": UpdateBlogsRequestSerializer,
+            "edit_item_from_cart_request": AddToCartRequestSerializer,
             "delete_contact_request": DeleteContactRequestSerializer,
             "delete_credit_card_request": DeleteCreditCardRequestSerializer,
             "delete_blog_request": DeleteBlogsRequestSerializer,
@@ -213,12 +215,12 @@ class CustomerView:
             data = ListBlogsResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['post'],
+        @action(detail=False, methods=['post'],
                 url_path='update_blog')
         def update_blog(self, request, *args, **kwargs):
             serializer = UpdateBlogsRequestSerializer(data=request.data, context=self.get_serializer_context())
             if serializer.is_valid(raise_exception=True):
-                data = Blogs.objects.filter(id=serializer.validated_data['supplier_id'])
+                data = Blogs.objects.filter(id=serializer.validated_data['blog_id'])
                 data.update(
                     title=serializer.validated_data["title"],
                     description=serializer.validated_data["description"],
@@ -266,7 +268,7 @@ class CustomerView:
             cart_data = Carts.objects.filter(user_id=user_id)
             for item in cart_data:
                 cart_id.append(item.id)
-            filter_data = CartItems.objects.filter(cart_id__in=cart_id)
+            filter_data = CartItems.objects.filter(cart_id__in=cart_id).order_by('created_at')
             for data in filter_data:
                 res = {
                     "id": data.id,
@@ -276,7 +278,8 @@ class CustomerView:
                     "image_url": data.item.image,
                     "quantity": data.quantity,
                     "price": data.item.price,
-                    "total_price": data.quantity * data.item.price
+                    "total_price": data.quantity * data.item.price,
+                    "item_id": data.item_id
                 }
                 response.append(res)
             return super().custom_response(response)
@@ -299,4 +302,16 @@ class CustomerView:
             if serializer.is_valid(raise_exception=True):
                 cart_item = CartItems.objects.filter(item_id=serializer.data['item_id'])
                 cart_item.update(quantity=serializer.data['quantity'])
-            return super().custom_response({"Update Success !"})
+                data = CartItems.objects.get(item_id=serializer.data['item_id'])
+                res = {
+                    "id": data.id,
+                    "name": data.item.name,
+                    "description": data.item.description,
+                    "short_description": data.item.short_description,
+                    "image_url": data.item.image,
+                    "quantity": data.quantity,
+                    "price": data.item.price,
+                    "total_price": data.quantity * data.item.price,
+                    "item_id": data.item_id
+                }
+            return super().custom_response(res)
