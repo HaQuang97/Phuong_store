@@ -89,6 +89,8 @@ class AddNewItemRequestSerializer(serializers.Serializer):
     quantity = serializers.IntegerField(required=True)
     description = serializers.CharField(max_length=10000)
     image = serializers.JSONField(required=False)
+    image2 = serializers.JSONField(required=False)
+    image3 = serializers.JSONField(required=False)
     short_description = serializers.CharField(max_length=10000, required=False)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
@@ -109,6 +111,8 @@ class UpdateItemRequestSerializer(serializers.Serializer):
     description = serializers.CharField(max_length=10000)
     short_description = serializers.CharField(max_length=10000, required=False)
     image = serializers.JSONField(required=False)
+    image2 = serializers.JSONField(required=False)
+    image3 = serializers.JSONField(required=False)
     quantity = serializers.IntegerField(required=True)
     price_temp = serializers.IntegerField(default=0)
     price = serializers.IntegerField(default=0)
@@ -167,10 +171,12 @@ class UpdateOrderRequestSerializer(serializers.Serializer):
 
 
 class AddNewCommentRequestSerializer(serializers.Serializer):
+    header = serializers.CharField(max_length=10000, required=True)
     comment = serializers.CharField(max_length=10000, required=True)
     item_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
     rating = serializers.IntegerField()
+    image = serializers.CharField(max_length=255)
 
     def update(self, instance, validated_data):
         pass
@@ -181,10 +187,12 @@ class AddNewCommentRequestSerializer(serializers.Serializer):
 
 class UpdateCommentRequestSerializer(serializers.Serializer):
     comment_id = serializers.IntegerField(required=True)
+    header = serializers.CharField(max_length=10000, required=True)
     comment = serializers.CharField(max_length=10000, required=True)
     item_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
     rating = serializers.IntegerField()
+    image = serializers.CharField(max_length=255)
 
     def update(self, instance, validated_data):
         pass

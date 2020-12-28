@@ -265,6 +265,8 @@ class CmsAdminView:
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
                     image=json.dumps(serializer.validated_data['image']),
+                    image2=json.dumps(serializer.validated_data['image2']),
+                    image3=json.dumps(serializer.validated_data['image3']),
                     quantity=serializer.validated_data['quantity'],
                     price_temp=serializer.validated_data['price_temp'],
                     price=serializer.validated_data['price'],
@@ -298,6 +300,8 @@ class CmsAdminView:
                     description=serializer.validated_data['description'],
                     short_description=serializer.validated_data['short_description'],
                     image=json.dumps(serializer.validated_data['image']),
+                    image2=json.dumps(serializer.validated_data['image2']),
+                    image3=json.dumps(serializer.validated_data['image3']),
                     price_temp=serializer.validated_data['price_temp'],
                     price=serializer.validated_data['price'],
                     sale=serializer.validated_data['sale'],
@@ -459,10 +463,12 @@ class CmsAdminView:
             serializer = AddNewCommentRequestSerializer(data=request.data, context=self.get_serializer_context())
             if serializer.is_valid(raise_exception=True):
                 Comments.objects.create(
+                    header=serializer.validated_data['header'],
                     comment=serializer.validated_data['comment'],
                     item_id=serializer.validated_data['item_id'],
                     user_id=serializer.validated_data['user_id'],
-                    rating=serializer.validated_data['rating']
+                    rating=serializer.validated_data['rating'],
+                    image=serializer.validated_data['image']
                 )
             return super().custom_response({})
 
@@ -473,10 +479,12 @@ class CmsAdminView:
             if serializer.is_valid(raise_exception=True):
                 data = Comments.objects.filter(id=serializer.validated_data['comment_id'])
                 data.update(
+                    header=serializer.validated_data['header'],
                     comment=serializer.validated_data['comment'],
                     item_id=serializer.validated_data['item_id'],
                     user_id=serializer.validated_data['user_id'],
-                    rating=serializer.validated_data['rating']
+                    rating=serializer.validated_data['rating'],
+                    image=serializer.validated_data['image']
                 )
             return super().custom_response({})
 
