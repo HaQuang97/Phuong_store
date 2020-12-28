@@ -1,6 +1,8 @@
 import json
 
 from django.utils.decorators import method_decorator
+from django_filters import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
@@ -31,7 +33,7 @@ class CustomerView:
     credit_card_id = openapi.Parameter('order_id', openapi.IN_QUERY,
                                        description="ID of Credit Card",
                                        type=openapi.TYPE_INTEGER, required=True)
-    blog_id = openapi.Parameter('order_id', openapi.IN_QUERY,
+    blog_id = openapi.Parameter('blog_id', openapi.IN_QUERY,
                                 description="ID of Blog",
                                 type=openapi.TYPE_INTEGER, required=True)
     subscriber_id = openapi.Parameter('order_id', openapi.IN_QUERY,
@@ -48,6 +50,10 @@ class CustomerView:
     @method_decorator(name='list_item_from_cart', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     class CustomerViewViewSet(GenericViewSet):
         queryset = User.objects.all()
+        # filter_backends = (DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter)
+        # filterset_class = ItemFilter
+        # ordering_field = ('name',)
+        # search_fields = ('',)
         action_serializers = {
             "list_user_response": ListUserResponseSerializer,
             "list_contact_response": ListContactResponseSerializer,
@@ -178,11 +184,11 @@ class CustomerView:
                     item.delete()
             return super().custom_response({"OK"})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='get_blog_detail')
         def get_blog_detail(self, request, *args, **kwargs):
             blog_id = int(request.query_params['blog_id'])
-            query = Blogs.objects.filter(blog_id=blog_id).order_by('-updated_at')
+            query = Blogs.objects.filter(id=blog_id).order_by('-updated_at')
             data = ListBlogsResponseSerializer(query, many=True).data
             return super().custom_response(data)
 
@@ -200,7 +206,7 @@ class CustomerView:
                 )
             return super().custom_response({"OK"})
 
-        @action(detail=False, methods=['get'], permission_classes=[IsAdminOrSubAdmin, IsAuthenticated],
+        @action(detail=False, methods=['get'],
                 url_path='list-blog')
         def list_blog(self, request, *args, **kwargs):
             query = Blogs.objects.all()

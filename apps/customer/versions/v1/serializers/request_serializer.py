@@ -125,3 +125,13 @@ class DeleteItemFromCartRequestSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         pass
+
+
+# class ItemFilter(filters.FilterSet):
+#     name = filters.CharFilter(method='name_filter')
+#
+#     def name_filter(self, queryset, name, value):
+#         name = value.split(',')
+#         return queryset.filters(**{
+#             'item__name__in': name,
+#         })

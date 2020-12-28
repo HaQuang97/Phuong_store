@@ -220,7 +220,7 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='supplier_detail')
         def supplier_detail(self, request, *args, **kwargs):
             supplier_id = int(request.query_params['supplier_id'])
@@ -304,7 +304,7 @@ class CmsAdminView:
                 )
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAuthenticated, IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='get-detail-item')
         def get_detail_item(self, request, *args, **kwargs):
             item_id = int(request.query_params['item_id'])
@@ -434,7 +434,7 @@ class CmsAdminView:
             ]
             return super().custom_response(response)
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-comment')
         def list_comment(self, request, *args, **kwargs):
             query = Comments.objects.all().order_by('-updated_at')
