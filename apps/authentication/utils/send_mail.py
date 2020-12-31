@@ -8,7 +8,7 @@ from django.template import loader
 
 from apps.authentication.models import UserAuth
 from apps.utils.config import MailSubject, OTPCode
-from apps.utils.constants import AuthType
+from apps.utils.constants import AuthType, OrderStatusType
 
 
 class EmailTemplate:
@@ -57,6 +57,18 @@ class EmailTemplate:
             target=self.send_mail_user,
             args=(user.email, MailSubject.forgot_password, html_message,),
             name='send_forgot_password_email'
+        )
+        thread_sendmail.start()
+
+    def send_completed_order_email(self, user):
+        context = self.get_context(user, OrderStatusType.COMPLETED.value)
+        html_message = loader.render_to_string(
+            'complete_order.html', context
+        )
+        thread_sendmail = threading.Thread(
+            target=self.send_mail_user,
+            args=(user.email, MailSubject.completed_order, html_message,),
+            name='send_completed_order_email'
         )
         thread_sendmail.start()
 

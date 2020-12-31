@@ -33,8 +33,8 @@ class OrderStatusType(Enum):
 
 
 class PaymentStatusType(Enum):
-    SUCCESS = 1
-    FAILURE = 2
+    CASH = 1
+    CREDIT_CARD = 2
 
 
 class AuthType(Enum):

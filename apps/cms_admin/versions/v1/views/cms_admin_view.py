@@ -9,6 +9,7 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.permissions import IsAuthenticated
 
 from apps.authentication.models import User
+from apps.authentication.utils.send_mail import EmailTemplate
 from apps.cms_admin.models import Category, Items, ItemImages, Orders, OrderDetails, Supplier, Comments
 from apps.customer.models import Contact, Subscribers, Blogs
 from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCategoryRequestSerializer, \
@@ -19,8 +20,9 @@ from apps.cms_admin.versions.v1.serializers.request_serializer import AddNewCate
     DeleteCommentRequestSerializer, UpdateCommentRequestSerializer, AddNewCommentRequestSerializer
 from apps.cms_admin.versions.v1.serializers.response_serializer import ListUserResponseSerializer, \
     ListCategoryResponseSerializer, ListItemResponseSerializer, ListOrderResponseSerializer, \
-    ListSupplierResponseSerializer, ListCommentResponseSerializer
+    ListSupplierResponseSerializer, ListCommentResponseSerializer, ListOrderDetailResponseSerializer
 from apps.utils.error_code import ErrorCode
+from apps.utils.exception import CustomException
 from apps.utils.permission import IsAdminOrSubAdmin
 from apps.utils.views_helper import GenericViewSet
 
@@ -56,6 +58,7 @@ class CmsAdminView:
     @method_decorator(name='destroy', decorator=swagger_auto_schema(auto_schema=None))
     @method_decorator(name='change_role_account', decorator=swagger_auto_schema(manual_parameters=[user_id]))
     @method_decorator(name="get_order_detail", decorator=swagger_auto_schema(manual_parameters=[order_id]))
+    @method_decorator(name="get_order_by_user", decorator=swagger_auto_schema(manual_parameters=[user_id]))
     @method_decorator(name="list_items_by_category", decorator=swagger_auto_schema(manual_parameters=[category_id]))
     @method_decorator(name="list_comments_by_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
     @method_decorator(name="get_detail_item", decorator=swagger_auto_schema(manual_parameters=[item_id]))
@@ -328,7 +331,7 @@ class CmsAdminView:
                     item.delete()
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
+        @action(detail=False, methods=['get'],
                 url_path='list-order')
         def list_order(self, request, *args, **kwargs):
             query = Orders.objects.all().order_by('-updated_at')
@@ -348,6 +351,7 @@ class CmsAdminView:
                     phone=serializer.data['phone'],
                     address=serializer.data['address'],
                     user_id=request.user.id,
+                    payment=serializer.data['payment'],
                 )
                 for item in queryset:
                     order_detail = OrderDetails.objects.create(
@@ -355,9 +359,10 @@ class CmsAdminView:
                         unit_price=item.price,
                         total_price=serializer.data['quantity'] * item.price,
                         item_id=item.id,
+                        user_id=request.user.id,
                         order=instance
                     )
-            return super().custom_response({})
+            return super().custom_response(instance)
 
         @action(detail=False, permission_classes=[IsAuthenticated], methods=['post'],
                 url_path='update-order')
@@ -368,9 +373,19 @@ class CmsAdminView:
                 instance = order_filter.update(
                     status=serializer.data['status']
                 )
+                if serializer.data['status'] == 4:
+                    user = self.get_users(order_filter[0].user.email)
+                    mail_template = EmailTemplate()
+                    mail_template.send_completed_order_email(user)
             return super().custom_response({})
 
-        @action(detail=False, permission_classes=[IsAdminOrSubAdmin, IsAuthenticated], methods=['get'],
+        def get_users(self, email):
+            try:
+                return User.objects.get(email__iexact=email)
+            except User.DoesNotExist:
+                raise CustomException(ErrorCode.wrong_email)
+
+        @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated],
                 url_path='get-order-detail')
         def get_order_detail(self, request, *args, **kwargs):
             order_id = int(request.query_params['order_id'])
@@ -388,17 +403,34 @@ class CmsAdminView:
                 "image": json.loads(order_filter.item.image)
             }
             user_data = {
+                "user_id": order_filter.order_data.user.id,
                 "name": order_filter.order_data.user.full_name,
                 "address": order_filter.order_data.user.address,
                 "phone": order_filter.order_data.user.phone
             }
             detail = {
+                "order_id": order_id,
                 "customer": user_data,
                 "item": item,
-                "quantity": order_filter.quantyti,
+                "quantity": order_filter.quantity,
                 "total_price": order_filter.total_price
             }
             return super().custom_response(detail)
+
+        @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated],
+                url_path='get_order_by_user')
+        def get_order_by_user(self, request, *args, **kwargs):
+            user_id = int(request.query_params['user_id'])
+            item_id_list = []
+            user_filter = Orders.objects.filter(user_id=user_id).prefetch_related(
+                Prefetch(
+                    'orderdetails_set',
+                    queryset=OrderDetails.objects.all(),
+                    to_attr='orderdetails_data'
+                )
+            )
+            data = ListOrderDetailResponseSerializer(user_filter, many=True).data
+            return super().custom_response(data)
 
         @action(detail=False, permission_classes=[IsAdminOrSubAdmin], methods=['get'],
                 url_path='statistic')

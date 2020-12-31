@@ -23,3 +23,4 @@ class OTPCode:
 class MailSubject:
     activation = 'ACTIVE'
     forgot_password = 'FORGOTPASSWORD'
+    completed_order = 'COMPLETEDORDER'

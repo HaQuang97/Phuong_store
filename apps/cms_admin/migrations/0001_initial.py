@@ -95,23 +95,6 @@ class Migration(migrations.Migration):
                 'db_table': 'orders',
             },
         ),
-        migrations.CreateModel(
-            name='OrderDetails',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('quantity', models.IntegerField(default=None)),
-                ('unit_price', models.IntegerField(default=None)),
-                ('total_price', models.IntegerField(default=None)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('deleted_at', models.DateTimeField(blank=True, default=None, null=True)),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cms_admin.items')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cms_admin.orders')),
-            ],
-            options={
-                'db_table': 'order_details',
-            },
-        ),
         migrations.AddField(
             model_name='items',
             name='supplier',

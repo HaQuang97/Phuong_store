@@ -21,8 +21,8 @@ ORDER_STATUS_TYPE = (
 )
 
 PAYMENT_STATUS_TYPE = (
-    (PaymentStatusType.SUCCESS.value, "Success"),
-    (PaymentStatusType.FAILURE.value, "Failure")
+    (PaymentStatusType.CASH.value, "Cash"),
+    (PaymentStatusType.CREDIT_CARD.value, "Credit Card")
 )
 
 
@@ -112,7 +112,7 @@ class Orders(models.Model):
     address = models.CharField(max_length=1024)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=1)
-    # payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE, default=1)
+    payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
