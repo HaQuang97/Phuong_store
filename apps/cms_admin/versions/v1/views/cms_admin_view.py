@@ -351,7 +351,7 @@ class CmsAdminView:
                     phone=serializer.data['phone'],
                     address=serializer.data['address'],
                     user_id=request.user.id,
-                    payment=serializer.data['payment'],
+                    payment_type=serializer.data['payment_type'],
                 )
                 for item in queryset:
                     order_detail = OrderDetails.objects.create(
@@ -359,7 +359,6 @@ class CmsAdminView:
                         unit_price=item.price,
                         total_price=serializer.data['quantity'] * item.price,
                         item_id=item.id,
-                        user_id=request.user.id,
                         order=instance
                     )
             return super().custom_response(instance)
@@ -403,7 +402,6 @@ class CmsAdminView:
                 "image": json.loads(order_filter.item.image)
             }
             user_data = {
-                "user_id": order_filter.order_data.user.id,
                 "name": order_filter.order_data.user.full_name,
                 "address": order_filter.order_data.user.address,
                 "phone": order_filter.order_data.user.phone

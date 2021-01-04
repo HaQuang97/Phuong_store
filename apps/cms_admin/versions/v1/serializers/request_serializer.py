@@ -151,7 +151,7 @@ class AddNewOrderRequestSerializer(serializers.Serializer):
     user_name = serializers.CharField(max_length=255)
     address = serializers.CharField(max_length=1024)
     phone = serializers.CharField(max_length=255)
-    payment = serializers.IntegerField(default=1)
+    payment_type = serializers.IntegerField(default=1)
 
     def update(self, instance, validated_data):
         pass

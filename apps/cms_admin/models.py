@@ -112,7 +112,7 @@ class Orders(models.Model):
     address = models.CharField(max_length=1024)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.IntegerField(choices=ORDER_STATUS_TYPE, default=0)
-    payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE)
+    payment_type = models.IntegerField(choices=PAYMENT_STATUS_TYPE, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(default=None, null=True, blank=True)
